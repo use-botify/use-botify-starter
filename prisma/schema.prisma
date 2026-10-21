@@ -6,3 +6,10 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model user {
+  id         BigInt   @id
+  username   String?
+  firstName  String?
+  createdAt  DateTime @default(now())
+}

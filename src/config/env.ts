@@ -5,7 +5,9 @@ import { logger } from "@/lib/logger";
 dotenv.config();
 
 const envSchema = z.object({
-  TELEGRAM_BOT_TOKEN: z.url({ error: "TELEGRAM_BOT_TOKEN is required" }),
+  TELEGRAM_BOT_TOKEN: z
+    .string()
+    .min(1, { error: "TELEGRAM_BOT_TOKEN is required" }),
   DATABASE_URL: z.url({ error: "Valid DATABASE_URL is required" }),
 });
 
