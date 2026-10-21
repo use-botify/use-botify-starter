@@ -10,23 +10,18 @@
 	},
 	"formatter": {
 		"enabled": true,
-		"indentStyle": "space",
-		"indentWidth": 2,
-		"lineWidth": 100
+		"indentStyle": "tab",
+		"indentWidth": 2
 	},
 	"linter": {
 		"enabled": true,
 		"rules": {
-			"preset": "recommended",
-			"correctness": {
-				"noUnusedImports": "error"
-			}
+			"preset": "recommended"
 		}
 	},
 	"javascript": {
 		"formatter": {
 			"quoteStyle": "double",
-			"jsxQuoteStyle": "double",
 			"semicolons": "always",
 			"trailingCommas": "all"
 		}
@@ -35,29 +30,7 @@
 		"enabled": true,
 		"actions": {
 			"source": {
-				"organizeImports": {
-					"level": "on",
-					"options": {
-						"groups": [
-							[
-								":BUN:",
-								":NODE:"
-							],
-							":BLANK_LINE:",
-							[
-								":PACKAGE:",
-								"!@myown/**"
-							],
-							":BLANK_LINE:",
-							"@myown/**",
-							":BLANK_LINE:",
-							[
-								":ALIAS:",
-								":PATH:"
-							]
-						]
-					}
-				}
+				"organizeImports": "on"
 			}
 		}
 	}

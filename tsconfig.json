@@ -1,16 +1,16 @@
 {
-  "compilerOptions": {
-    "strict": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    },
+	"compilerOptions": {
+		"strict": true,
+		"paths": {
+			"@/*": ["./src/*"]
+		},
 
-    // TODO :- Review The later
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "target": "esnext",
-    "types": ["node"],
-    "verbatimModuleSyntax": true,
-    "skipLibCheck": true
-  }
+		// TODO :- Review The later
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"target": "esnext",
+		"types": ["node"],
+		"verbatimModuleSyntax": true,
+		"skipLibCheck": true
+	}
 }
