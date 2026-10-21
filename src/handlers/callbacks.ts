@@ -1,6 +1,7 @@
-import { Bot, Context } from "grammY";
+import type { Bot, Context } from "grammY";
+
 import { logger } from "@/lib/logger";
-import { type CallbackHandler } from "@/types/handlers";
+import type { CallbackHandler } from "@/types/handlers"
 
 export const callbacks: CallbackHandler[] = [
   {

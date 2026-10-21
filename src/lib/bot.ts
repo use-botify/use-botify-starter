@@ -1,4 +1,4 @@
-import { Bot, Context } from "grammY";
+import { Bot, type Context } from "grammY";
 import { logger } from "@/lib/logger";
 import { registerCommands, commands } from "@/handlers/commands";
 import { registerCallbacks } from "@/handlers/callbacks";

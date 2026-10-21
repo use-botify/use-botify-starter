@@ -1,4 +1,4 @@
-import { Context } from "grammY";
+import type { Context } from "grammY";
 
 export interface BaseHandler {
   description: string;
