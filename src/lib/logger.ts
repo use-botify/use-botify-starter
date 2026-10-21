@@ -3,70 +3,91 @@ import chalk from "chalk";
 export type LogLevel = "INFO" | "WARN" | "ERROR";
 
 export class Logger {
-	private serializeContext(context?: unknown): string {
-		if (!context) return "";
+  private jsonReplacer(_key: string, value: unknown): unknown {
+    if (typeof value === "bigint") {
+      return value.toString();
+    }
+    if (value instanceof Error) {
+      return {
+        name: value.name,
+        message: value.message,
+        stack: value.stack,
+      };
+    }
+    return value;
+  }
 
-		if (context instanceof Error) {
-			return ` | Context: ${JSON.stringify({
-				name: context.name,
-				message: context.message,
-				stack: context.stack,
-			})}`;
-		}
+  private serializeContext(context?: unknown): string {
+    if (context === undefined || context === null) return "";
 
-		if (typeof context === "object") {
-			return ` | Context: ${JSON.stringify(context)}`;
-		}
+    try {
+      if (context instanceof Error) {
+        return ` | Context: ${JSON.stringify(
+          {
+            name: context.name,
+            message: context.message,
+            stack: context.stack,
+          },
+          this.jsonReplacer,
+        )}`;
+      }
 
-		return ` | Context: ${String(context)}`;
-	}
+      if (typeof context === "object") {
+        return ` | Context: ${JSON.stringify(context, this.jsonReplacer)}`;
+      }
 
-	private formatMessage(
-		level: LogLevel,
-		step: string,
-		message: string,
-		context?: unknown,
-	): string {
-		const timestamp = new Date().toISOString();
-		const contextStr = this.serializeContext(context);
+      return ` | Context: ${String(context)}`;
+    } catch {
+      return " | Context: [Unserializable Object]";
+    }
+  }
 
-		let coloredLevel: string;
-		switch (level) {
-			case "INFO":
-				coloredLevel = chalk.blue(`[${level}]`);
-				break;
-			case "WARN":
-				coloredLevel = chalk.yellow(`[${level}]`);
-				break;
-			case "ERROR":
-				coloredLevel = chalk.red(`[${level}]`);
-				break;
-			default:
-				coloredLevel = `[${level}]`;
-		}
+  private formatMessage(
+    level: LogLevel,
+    step: string,
+    message: string,
+    context?: unknown,
+  ): string {
+    const timestamp = new Date().toISOString();
+    const contextStr = this.serializeContext(context);
 
-		return `${chalk.gray(`[${timestamp}]`)} ${coloredLevel} ${chalk.green(`[${step}]`)} ${message}${chalk.cyan(contextStr)}`;
-	}
+    let coloredLevel: string;
+    switch (level) {
+      case "INFO":
+        coloredLevel = chalk.blue(`[${level}]`);
+        break;
+      case "WARN":
+        coloredLevel = chalk.yellow(`[${level}]`);
+        break;
+      case "ERROR":
+        coloredLevel = chalk.red(`[${level}]`);
+        break;
+      default:
+        coloredLevel = `[${level}]`;
+    }
 
-	public info(
-		step: string,
-		message: string,
-		context?: Record<string, unknown>,
-	): void {
-		console.log(this.formatMessage("INFO", step, message, context));
-	}
+    return `${chalk.gray(`[${timestamp}]`)} ${coloredLevel} ${chalk.green(`[${step}]`)} ${message}${chalk.cyan(contextStr)}`;
+  }
 
-	public warn(
-		step: string,
-		message: string,
-		context?: Record<string, unknown>,
-	): void {
-		console.warn(this.formatMessage("WARN", step, message, context));
-	}
+  public info(
+    step: string,
+    message: string,
+    context?: Record<string, unknown>,
+  ): void {
+    console.log(this.formatMessage("INFO", step, message, context));
+  }
 
-	public error(step: string, message: string, errorOrContext?: unknown): void {
-		console.error(this.formatMessage("ERROR", step, message, errorOrContext));
-	}
+  public warn(
+    step: string,
+    message: string,
+    context?: Record<string, unknown>,
+  ): void {
+    console.warn(this.formatMessage("WARN", step, message, context));
+  }
+
+  public error(step: string, message: string, errorOrContext?: unknown): void {
+    console.error(this.formatMessage("ERROR", step, message, errorOrContext));
+  }
 }
 
 export const logger = new Logger();

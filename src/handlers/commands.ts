@@ -1,67 +1,22 @@
-import { Bot, Context, InlineKeyboard } from "grammY";
-import { logger } from "@/lib/logger";
-import type { CommandHandler } from "@/types/handlers";
-import { prisma } from "@/lib/db";
-import { getBotStats } from "@/lib/stats";
+import type { Bot, Context } from "grammy";
+import type { BotCommand } from "grammy/types";
+import { statsCommand } from "@/commands/admin";
+import { startCommand } from "@/commands/public";
+import { isAdmin } from "@/middlewares/is-admin";
 
-export const commands: CommandHandler[] = [
-  {
-    command: "start",
-    description: "Start the bot",
-    handler: async (ctx) => {
-      if (!ctx.from) return;
-
-      logger.info("BotInit", "Received /start command", {
-        userId: ctx.from.id,
-      });
-
-      const telegramId = BigInt(ctx.from.id);
-      const username = ctx.from.username ?? null;
-      const firstName = ctx.from.first_name;
-
-      await prisma.user.upsert({
-        where: { id: telegramId },
-        update: { username, firstName },
-        create: { id: telegramId, username, firstName },
-      });
-
-      await ctx.reply("Bot is running and ready to boost channels!");
-    },
-    isPublic: true,
-  },
-  {
-    command: "menu",
-    description: "Show menu",
-    handler: async (ctx) => {
-      const menu = new InlineKeyboard()
-        .text("Developer", "menu:dev")
-        .text("Admin", "menu:admin")
-        .row()
-        .text("Help", "menu:help");
-      await ctx.reply("Choose an option:", { reply_markup: menu });
-    },
-    isPublic: true,
-  },
-  {
-    command: "stats",
-    description: "Check bot statistics",
-    handler: async (ctx) => {
-      const stats = getBotStats();
-      logger.info("StatsHandler", "Received /stats command");
-
-      const statsMessage =
-        `🤖 *Bot Statistics*\n\n` +
-        `⏱️ *Uptime:* ${stats.uptime}\n` +
-        `💾 *Memory Usage:* ${stats.memoryUsage}\n`;
-
-      await ctx.reply(statsMessage, { parse_mode: "Markdown" });
-    },
-    isPublic: false,
-  },
+export const publicCommandsMenu: BotCommand[] = [
+  { command: "start", description: "Start the bot" },
 ];
 
-export function registerCommands(bot: Bot<Context>) {
-  commands.forEach((cmd) => {
-    bot.command(cmd.command, cmd.handler);
-  });
+export const adminCommandsMenu: BotCommand[] = [
+  ...publicCommandsMenu,
+  { command: "stats", description: "View bot statistics (Admin)" },
+];
+
+export function registerPublicCommands(bot: Bot<Context>): void {
+  bot.command("start", startCommand);
+}
+
+export function registerAdminCommands(bot: Bot<Context>): void {
+  bot.command("stats", isAdmin, statsCommand);
 }
