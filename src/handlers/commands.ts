@@ -1,6 +1,6 @@
 import type { Bot, Context } from "grammy";
 import type { BotCommand } from "grammy/types";
-import { statsCommand } from "@/commands/admin";
+import { broadcastCommand, statsCommand } from "@/commands/admin";
 import { startCommand } from "@/commands/public";
 import { isAdmin } from "@/middlewares/is-admin";
 
@@ -11,6 +11,7 @@ export const publicCommandsMenu: BotCommand[] = [
 export const adminCommandsMenu: BotCommand[] = [
   ...publicCommandsMenu,
   { command: "stats", description: "View bot statistics (Admin)" },
+  { command: "broadcast", description: "Broadcast a message (Admin)" },
 ];
 
 export function registerPublicCommands(bot: Bot<Context>): void {
@@ -19,4 +20,5 @@ export function registerPublicCommands(bot: Bot<Context>): void {
 
 export function registerAdminCommands(bot: Bot<Context>): void {
   bot.command("stats", isAdmin, statsCommand);
+  bot.command("broadcast", isAdmin, broadcastCommand);
 }

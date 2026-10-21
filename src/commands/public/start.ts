@@ -1,4 +1,5 @@
-import { type Context, InlineKeyboard } from "grammy";
+import type { Context } from "grammy";
+import { PUBLIC_CALLBACKS, TypedInlineKeyboard } from "@/lib/callbacks";
 import { db } from "@/lib/db";
 import { logger } from "@/lib/logger";
 
@@ -16,8 +17,8 @@ export async function startCommand(ctx: Context): Promise<void> {
   try {
     await db.user.upsert({
       where: { id: telegramId },
-      update: { username, firstName },
-      create: { id: telegramId, username, firstName },
+      update: { username, firstName, isActive: true },
+      create: { id: telegramId, username, firstName, isActive: true },
     });
   } catch (err) {
     logger.error("StartHandler", "Failed to upsert user in database", {
@@ -26,9 +27,17 @@ export async function startCommand(ctx: Context): Promise<void> {
     });
   }
 
-  const keyboard = new InlineKeyboard().text("📖 Help", "public:help");
+  const displayName = username ? `@${username}` : firstName;
 
-  await ctx.reply("Bot is running and ready to boost channels!", {
-    reply_markup: keyboard,
-  });
+  const keyboard = new TypedInlineKeyboard().text(
+    "📖 Help",
+    PUBLIC_CALLBACKS.HELP,
+  );
+
+  await ctx.reply(
+    `Hey, ${displayName}!\n\nBot is running and ready to boost channels!`,
+    {
+      reply_markup: keyboard,
+    },
+  );
 }

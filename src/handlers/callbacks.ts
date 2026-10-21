@@ -1,28 +1,44 @@
 import type { Bot, Context } from "grammy";
-import { refreshStatsCallback } from "@/callbacks/admin";
+import {
+  broadcastCancelCallback,
+  broadcastRetryCallback,
+  broadcastSendCallback,
+  refreshStatsCallback,
+} from "@/callbacks/admin";
 import { helpCallback } from "@/callbacks/public";
-import { logger } from "@/lib/logger";
+import {
+  PUBLIC_CALLBACKS,
+  ADMIN_CALLBACKS,
+  registerStaticCallback,
+} from "@/lib/callbacks";
 import { isAdmin } from "@/middlewares/is-admin";
 
-export function registerCallbacks(bot: Bot<Context>): void {
-  // 1. Public Callbacks
-  bot.callbackQuery("public:help", helpCallback);
+export function registerPublicCallbacks(bot: Bot<Context>): void {
+  registerStaticCallback(bot, PUBLIC_CALLBACKS.HELP, helpCallback);
+}
 
-  // 2. Admin Callbacks (Protected by isAdmin middleware)
-  bot.callbackQuery("admin:refresh_stats", isAdmin, refreshStatsCallback);
+export function registerAdminCallbacks(bot: Bot<Context>): void {
+  registerStaticCallback(
+    bot,
+    ADMIN_CALLBACKS.REFRESH_STATS,
+    isAdmin,
+    refreshStatsCallback,
+  );
+  registerStaticCallback(
+    bot,
+    ADMIN_CALLBACKS.BROADCAST_CANCEL,
+    isAdmin,
+    broadcastCancelCallback,
+  );
 
-  // 3. Fallback for unmatched/stale callback buttons
-  bot.on("callback_query:data", async (ctx) => {
-    logger.warn("CallbackHandler", "Unhandled callback query received", {
-      userId: ctx.from?.id,
-      data: ctx.callbackQuery.data,
-    });
-
-    await ctx
-      .answerCallbackQuery({
-        text: "⚠️ This button is no longer active.",
-        show_alert: false,
-      })
-      .catch(() => {});
-  });
+  bot.callbackQuery(
+    ADMIN_CALLBACKS.BROADCAST_SEND.regex,
+    isAdmin,
+    broadcastSendCallback,
+  );
+  bot.callbackQuery(
+    ADMIN_CALLBACKS.BROADCAST_RETRY.regex,
+    isAdmin,
+    broadcastRetryCallback,
+  );
 }

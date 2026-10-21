@@ -37,7 +37,6 @@ export async function errorHandler(err: BotError<Context>): Promise<void> {
     );
   }
 
-  // Attempt to notify the user unless the bot was blocked (403) or chat not found (400)
   if (
     ctx.chat &&
     !(

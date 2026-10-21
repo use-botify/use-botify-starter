@@ -3,9 +3,7 @@ import { env } from "@/config/env";
 import { logger } from "@/lib/logger";
 
 interface RateLimitOptions {
-  /** Time window in milliseconds (default: 3000ms) */
   windowMs?: number;
-  /** Max allowed requests per window (default: 3) */
   maxRequests?: number;
 }
 
@@ -14,7 +12,6 @@ export function rateLimit(options: RateLimitOptions = {}) {
   const maxRequests = options.maxRequests ?? 3;
   const userTimestamps = new Map<number, number[]>();
 
-  // Periodically prune expired user entries every 60s to prevent memory leaks
   setInterval(() => {
     const now = Date.now();
     for (const [userId, timestamps] of userTimestamps.entries()) {
@@ -34,7 +31,6 @@ export function rateLimit(options: RateLimitOptions = {}) {
       return;
     }
 
-    // Optional: Bypass rate limiting for the bot admin
     if (BigInt(userId) === BigInt(env.ADMIN_ID)) {
       await next();
       return;
@@ -51,7 +47,6 @@ export function rateLimit(options: RateLimitOptions = {}) {
         requestsInWindow: recentRequests.length,
       });
 
-      // If the user is spamming an inline button, answer with a popup toast
       if (ctx.callbackQuery) {
         await ctx
           .answerCallbackQuery({
@@ -62,7 +57,6 @@ export function rateLimit(options: RateLimitOptions = {}) {
         return;
       }
 
-      // Only send a chat warning on the first blocked attempt in the window to avoid counter-spamming
       if (recentRequests.length === maxRequests) {
         recentRequests.push(now);
         userTimestamps.set(userId, recentRequests);

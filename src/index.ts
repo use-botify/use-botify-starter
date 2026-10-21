@@ -1,5 +1,8 @@
 import { env } from "@/config/env";
-import { registerCallbacks } from "@/handlers/callbacks";
+import {
+  registerAdminCallbacks,
+  registerPublicCallbacks,
+} from "@/handlers/callbacks";
 import {
   adminCommandsMenu,
   publicCommandsMenu,
@@ -10,12 +13,16 @@ import { bot } from "@/lib/bot";
 import { db } from "@/lib/db";
 import { logger } from "@/lib/logger";
 import { rateLimit } from "@/middlewares/rate-limit";
+import { registerChatMemberHandlers } from "@/handlers/chat-member";
 
 bot.use(rateLimit({ windowMs: 3000, maxRequests: 3 }));
 
+registerChatMemberHandlers(bot);
 registerPublicCommands(bot);
 registerAdminCommands(bot);
-registerCallbacks(bot);
+
+registerPublicCallbacks(bot);
+registerAdminCallbacks(bot);
 
 const syncCommandMenus = async (): Promise<void> => {
   try {
