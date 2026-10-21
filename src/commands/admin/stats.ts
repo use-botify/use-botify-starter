@@ -1,4 +1,4 @@
-import { Context, InlineKeyboard } from "grammY";
+import { type Context, InlineKeyboard } from "grammY";
 import { logger } from "@/lib/logger";
 
 const startTime = Date.now();
