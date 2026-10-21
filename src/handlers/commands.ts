@@ -1,7 +1,8 @@
-import { type Bot, type Context, InlineKeyboard } from "grammY";
+import { Bot, Context, InlineKeyboard } from "grammY";
 import { logger } from "@/lib/logger";
 import type { CommandHandler } from "@/types/handlers";
 import { prisma } from "@/lib/db";
+import { getBotStats } from "@/lib/stats";
 
 export const commands: CommandHandler[] = [
   {
@@ -45,8 +46,15 @@ export const commands: CommandHandler[] = [
     command: "stats",
     description: "Check bot statistics",
     handler: async (ctx) => {
+      const stats = getBotStats();
       logger.info("StatsHandler", "Received /stats command");
-      await ctx.reply("Bot Statistics\nUptime: Operational\nCommands: Active");
+
+      const statsMessage =
+        `🤖 *Bot Statistics*\n\n` +
+        `⏱️ *Uptime:* ${stats.uptime}\n` +
+        `💾 *Memory Usage:* ${stats.memoryUsage}\n`;
+
+      await ctx.reply(statsMessage, { parse_mode: "Markdown" });
     },
     isPublic: false,
   },

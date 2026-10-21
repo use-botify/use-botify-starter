@@ -9,6 +9,9 @@ const envSchema = z.object({
     .string()
     .min(1, { error: "TELEGRAM_BOT_TOKEN is required" }),
   DATABASE_URL: z.url({ error: "Valid DATABASE_URL is required" }),
+  ADMIN_ID: z
+    .string()
+    .min(1, { error: "Admin Id (eg: 1234567890) is required" }),
 });
 
 const parsed = envSchema.safeParse(process.env);
