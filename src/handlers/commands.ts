@@ -1,6 +1,6 @@
-import { Bot, Context, InlineKeyboard } from "grammY";
+import { type Bot, type Context, InlineKeyboard } from "grammY";
 import { logger } from "@/lib/logger";
-import { type CommandHandler } from "@/types/handlers";
+import type { CommandHandler } from "@/types/handlers";
 import { prisma } from "@/lib/db";
 
 export const commands: CommandHandler[] = [
