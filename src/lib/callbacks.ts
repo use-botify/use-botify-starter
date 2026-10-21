@@ -1,3 +1,4 @@
+// src/lib/callbacks.ts
 import {
   type Bot,
   type Context,
@@ -7,18 +8,14 @@ import {
 
 export type BroadcastTarget = "users" | "channels" | "groups" | "all";
 
-export type CallbackAction =
-  | typeof PUBLIC_CALLBACKS.HELP
-  | typeof ADMIN_CALLBACKS.REFRESH_STATS
-  | typeof ADMIN_CALLBACKS.BROADCAST_CANCEL
-  | ReturnType<typeof ADMIN_CALLBACKS.BROADCAST_SEND.build>
-  | ReturnType<typeof ADMIN_CALLBACKS.BROADCAST_RETRY.build>;
-
 export const PUBLIC_CALLBACKS = {
   HELP: "public:help",
 } as const;
 
 export const ADMIN_CALLBACKS = {
+  PANEL: "admin:panel",
+  TOGGLE_MAINTENANCE: "admin:toggle_maintenance",
+  BROADCAST_INFO: "admin:broadcast_info",
   REFRESH_STATS: "admin:refresh_stats",
   BROADCAST_CANCEL: "admin:broadcast:cancel",
   BROADCAST_SEND: {
@@ -51,12 +48,22 @@ export const ADMIN_CALLBACKS = {
   },
 } as const;
 
+export type StaticCallbackAction =
+  | typeof PUBLIC_CALLBACKS.HELP
+  | typeof ADMIN_CALLBACKS.PANEL
+  | typeof ADMIN_CALLBACKS.TOGGLE_MAINTENANCE
+  | typeof ADMIN_CALLBACKS.BROADCAST_INFO
+  | typeof ADMIN_CALLBACKS.REFRESH_STATS
+  | typeof ADMIN_CALLBACKS.BROADCAST_CANCEL;
+
+export type CallbackAction =
+  | StaticCallbackAction
+  | ReturnType<typeof ADMIN_CALLBACKS.BROADCAST_SEND.build>
+  | ReturnType<typeof ADMIN_CALLBACKS.BROADCAST_RETRY.build>;
+
 export function registerStaticCallback(
   bot: Bot<Context>,
-  action:
-    | typeof PUBLIC_CALLBACKS.HELP
-    | typeof ADMIN_CALLBACKS.REFRESH_STATS
-    | typeof ADMIN_CALLBACKS.BROADCAST_CANCEL,
+  action: StaticCallbackAction,
   ...middleware: Array<Middleware<Context>>
 ): void {
   bot.callbackQuery(action, ...middleware);

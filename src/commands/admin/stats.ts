@@ -48,10 +48,10 @@ export async function buildStatsMessage(includeTimestamp = false): Promise<{
     text += `\n• 🔄 Updated: \`${new Date().toLocaleTimeString()}\``;
   }
 
-  const keyboard = new TypedInlineKeyboard().text(
-    "🔄 Refresh",
-    ADMIN_CALLBACKS.REFRESH_STATS,
-  );
+  const keyboard = new TypedInlineKeyboard()
+    .text("🔄 Refresh", ADMIN_CALLBACKS.REFRESH_STATS)
+    .row()
+    .text("⬅️ Back to Admin Panel", ADMIN_CALLBACKS.PANEL);
 
   return { text, keyboard };
 }

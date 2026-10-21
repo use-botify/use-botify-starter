@@ -14,13 +14,14 @@ import { db } from "@/lib/db";
 import { logger } from "@/lib/logger";
 import { rateLimit } from "@/middlewares/rate-limit";
 import { registerChatMemberHandlers } from "@/handlers/chat-member";
+import { maintenanceMiddleware } from "./middlewares/maintenance";
 
 bot.use(rateLimit({ windowMs: 3000, maxRequests: 3 }));
+bot.use(maintenanceMiddleware);
 
 registerChatMemberHandlers(bot);
 registerPublicCommands(bot);
 registerAdminCommands(bot);
-
 registerPublicCallbacks(bot);
 registerAdminCallbacks(bot);
 

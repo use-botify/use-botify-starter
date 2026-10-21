@@ -1,4 +1,5 @@
 import type { Context } from "grammy";
+import { buildHelpMessage } from "@/commands/public/help";
 import { logger } from "@/lib/logger";
 
 export async function helpCallback(ctx: Context): Promise<void> {
@@ -6,9 +7,11 @@ export async function helpCallback(ctx: Context): Promise<void> {
     userId: ctx.from?.id,
   });
 
+  const { text, keyboard } = buildHelpMessage(ctx.from?.id);
+
   await ctx.answerCallbackQuery();
-  await ctx.editMessageText(
-    "📖 *Help & Commands*\n\nUse /start to initialize your account and access channel boosting tools.",
-    { parse_mode: "Markdown" },
-  );
+  await ctx.editMessageText(text, {
+    parse_mode: "Markdown",
+    reply_markup: keyboard,
+  });
 }
