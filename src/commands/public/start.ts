@@ -1,4 +1,4 @@
-import type { Context } from "grammy";
+import { type Context, InlineKeyboard } from "grammy";
 import { db } from "@/lib/db";
 import { logger } from "@/lib/logger";
 
@@ -26,5 +26,9 @@ export async function startCommand(ctx: Context): Promise<void> {
     });
   }
 
-  await ctx.reply("Bot is running and ready to boost channels!");
+  const keyboard = new InlineKeyboard().text("📖 Help", "public:help");
+
+  await ctx.reply("Bot is running and ready to boost channels!", {
+    reply_markup: keyboard,
+  });
 }

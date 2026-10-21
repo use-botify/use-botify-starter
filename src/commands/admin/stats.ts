@@ -1,4 +1,4 @@
-import { Context } from "grammY";
+import { Context, InlineKeyboard } from "grammY";
 import { logger } from "@/lib/logger";
 
 const startTime = Date.now();
@@ -15,10 +15,18 @@ export async function statsCommand(ctx: Context): Promise<void> {
     `⏱️ *Uptime:* ${stats.uptime}\n` +
     `💾 *Memory Usage:* ${stats.memoryUsage}\n`;
 
-  await ctx.reply(statsMessage, { parse_mode: "Markdown" });
+  const keyboard = new InlineKeyboard().text(
+    "🔄 Refresh stats",
+    "admin:refresh_stats",
+  );
+
+  await ctx.reply(statsMessage, {
+    parse_mode: "Markdown",
+    reply_markup: keyboard,
+  });
 }
 
-function getUptime(): string {
+export function getUptime(): string {
   const now = Date.now();
   const uptimeMs = now - startTime;
 

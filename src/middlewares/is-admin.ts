@@ -13,6 +13,17 @@ export async function isAdmin(ctx: Context, next: NextFunction): Promise<void> {
       userId: ctx.from.id,
       username: ctx.from.username ?? null,
     });
+
+    if (ctx.callbackQuery) {
+      await ctx
+        .answerCallbackQuery({
+          text: "⛔ Access denied. Admin privileges required.",
+          show_alert: true,
+        })
+        .catch(() => {});
+      return;
+    }
+
     await ctx.reply("⛔ Access denied. Admin privileges required.");
     return;
   }

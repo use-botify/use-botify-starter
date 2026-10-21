@@ -1,4 +1,5 @@
 import { env } from "@/config/env";
+import { registerCallbacks } from "@/handlers/callbacks";
 import {
   adminCommandsMenu,
   publicCommandsMenu,
@@ -8,9 +9,13 @@ import {
 import { bot } from "@/lib/bot";
 import { db } from "@/lib/db";
 import { logger } from "@/lib/logger";
+import { rateLimit } from "@/middlewares/rate-limit";
+
+bot.use(rateLimit({ windowMs: 3000, maxRequests: 3 }));
 
 registerPublicCommands(bot);
 registerAdminCommands(bot);
+registerCallbacks(bot);
 
 const syncCommandMenus = async (): Promise<void> => {
   try {
