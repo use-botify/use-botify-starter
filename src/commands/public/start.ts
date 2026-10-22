@@ -1,7 +1,12 @@
 import type { Context } from "grammy";
-import { PUBLIC_CALLBACKS, TypedInlineKeyboard } from "@/lib/callbacks";
+import {
+  ADMIN_CALLBACKS,
+  PUBLIC_CALLBACKS,
+  TypedInlineKeyboard,
+} from "@/lib/callbacks";
 import { db } from "@/lib/db";
 import { logger } from "@/lib/logger";
+import { getImage } from "@/lib/get-image";
 
 export async function startCommand(ctx: Context): Promise<void> {
   if (!ctx.from) return;
@@ -34,10 +39,13 @@ export async function startCommand(ctx: Context): Promise<void> {
     PUBLIC_CALLBACKS.HELP,
   );
 
+  const adminPanelKeyboard = new TypedInlineKeyboard().text(
+    "🛠️ Admin Panel",
+    ADMIN_CALLBACKS.PANEL,
+  );
+
   await ctx.reply(
     `Hey, ${displayName}!\n\nBot is running and ready to boost channels!`,
-    {
-      reply_markup: keyboard,
-    },
+    { reply_markup: adminPanelKeyboard },
   );
 }
