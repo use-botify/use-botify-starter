@@ -1,6 +1,14 @@
 import { env } from "@/configs/env.config";
 import type { BotContext } from "@/lib/bot";
 
+export type Access = "public" | "admin" | "developer";
+
+export const ACCESS_RANK: Record<Access, number> = {
+	public: 0,
+	admin: 1,
+	developer: 2,
+};
+
 const ADMIN_IDS: ReadonlySet<number> = new Set([
 	...env.ADMIN_IDS,
 	env.DEVELOPER_ID,

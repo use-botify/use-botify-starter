@@ -1,13 +1,16 @@
 import { autoRetry } from "@grammyjs/auto-retry";
 import { type RunnerHandle, run, sequentialize } from "@grammyjs/runner";
 
+import { features } from "@/features";
+import { registerCommandMenuHandler } from "@/handlers/register-command-menu.handler";
+import { registerFeatureHandler } from "@/handlers/register-feature.handler";
 import { bot } from "@/lib/bot";
 import { db } from "@/lib/database.prisma";
 import { logger } from "@/lib/logger";
 import { installProcessHooks, onShutdown, shutdown } from "@/lib/shutdown";
+import { autoAnswerCallback } from "@/middlewares/auto-answer-callback";
 import { globalCentralizedError } from "@/middlewares/global-centralized-error";
 import { rateLimiter } from "@/middlewares/rate-limiter";
-import { autoAnswerCallback } from "@/middlewares/auto-answer-callback";
 
 bot.api.config.use(autoRetry({ maxRetryAttempts: 3, maxDelaySeconds: 10 }));
 
@@ -36,6 +39,8 @@ onShutdown({
 installProcessHooks();
 
 const main = async (): Promise<void> => {
+  registerFeatureHandler(bot, features);
+
   await bot.init();
 
   await db.$connect();
@@ -43,6 +48,8 @@ const main = async (): Promise<void> => {
     "Main",
     "Database connection verified & connected successfully...",
   );
+
+  await registerCommandMenuHandler(bot, features);
 
   await bot.api.deleteWebhook({ drop_pending_updates: true });
 
