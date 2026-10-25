@@ -8,3 +8,5 @@ docs
 
 # Random Code
 code.ts
+
+src/handlers/*

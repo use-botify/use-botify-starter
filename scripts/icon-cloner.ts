@@ -6,7 +6,7 @@ import type { BotCommand, Message, Sticker } from "grammy/types";
 
 import { bot as botInstance } from "@/lib/bot";
 import { logger } from "@/lib/logger";
-import { isDeveloperCtx } from "@/middleware/access-guard";
+import { isDeveloperCtx } from "@/middlewares/access-guard";
 
 const OUTPUT_PATH = resolve(process.cwd(), "src/lib", "icons.ts");
 const RELATIVE_OUTPUT_PATH = relative(process.cwd(), OUTPUT_PATH).replaceAll(
