@@ -11,6 +11,11 @@ export const registerCommandMenuHandler = async (
 	features: readonly Feature[],
 ): Promise<void> => {
 	try {
+		await bot.api.deleteMyCommands({
+			scope: { type: "all_private_chats" },
+		});
+		logger.info("CommandMenu", "Private command menu cleared.");
+
 		await bot.api.setMyCommands(buildCommandMenu(features, "public"));
 		logger.info("CommandMenu", "Public command menu synced.");
 	} catch (error) {

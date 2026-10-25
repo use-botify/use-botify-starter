@@ -14,17 +14,11 @@ const ADMIN_IDS: ReadonlySet<number> = new Set([
 	env.DEVELOPER_ID,
 ]);
 
-const ADMIN_BIGINT_IDS: readonly bigint[] = [...ADMIN_IDS].map((id) =>
-	BigInt(id),
-);
-
 export const isUserAdmin = (userId?: number): boolean =>
 	userId !== undefined && ADMIN_IDS.has(userId);
 
 export const isUserDeveloper = (userId?: number): boolean =>
 	userId !== undefined && userId === env.DEVELOPER_ID;
-
-export const getAdminBigIntIds = (): readonly bigint[] => ADMIN_BIGINT_IDS;
 
 type WithFrom<C extends BotContext> = C & { from: NonNullable<C["from"]> };
 

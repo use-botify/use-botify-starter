@@ -18,12 +18,3 @@ model User {
   @@index([createdAt])
   @@map("user")
 }
-
-model BotState {
-  id                   Int       @id @default(1)
-  maintenanceEnabled   Boolean   @default(false)
-  transitionInProgress Boolean   @default(false)
-  transitionStartedAt  DateTime?
-  updatedByAdminId     BigInt?
-  updatedAt            DateTime  @updatedAt
-}

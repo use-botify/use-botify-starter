@@ -14,7 +14,6 @@
 		"db:migrate": "prisma migrate dev",
 		"clean:modules": "tsx scripts/clean-modules.ts",
 		"docs:generate": "repomix",
-		"icon-cloner": "tsx scripts/icon-cloner.ts",
 		"check:all": "tsx scripts/check-and-fix.ts"
 	},
 	"dependencies": {
@@ -30,12 +29,12 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.15",
-		"@types/cross-spawn": "^6.0.6",
+		"@types/cross-spawn": "6.0.6",
 		"@types/node": "26.6.5",
 		"@types/pg": "8.23.1",
-		"cross-spawn": "^7.0.6",
+		"cross-spawn": "7.0.6",
 		"prisma": "7.10.1",
-		"repomix": "^1.18.1",
+		"repomix": "1.18.1",
 		"tsx": "4.23.15",
 		"typescript": "7.0.2"
 	},
