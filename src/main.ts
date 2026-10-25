@@ -1,6 +1,7 @@
 import { autoRetry } from "@grammyjs/auto-retry";
 import { type RunnerHandle, run, sequentialize } from "@grammyjs/runner";
 
+import { env } from "@/configs/env.config";
 import { features } from "@/features";
 import { registerCommandMenuHandler } from "@/handlers/register-command-menu.handler";
 import { registerFeatureHandler } from "@/handlers/register-feature.handler";
@@ -51,7 +52,9 @@ const main = async (): Promise<void> => {
 
 	await registerCommandMenuHandler(bot, features);
 
-	await bot.api.deleteWebhook({ drop_pending_updates: true });
+	await bot.api.deleteWebhook({
+		drop_pending_updates: env.NODE_ENV !== "production",
+	});
 
 	botRunner = run(bot, {
 		runner: {
