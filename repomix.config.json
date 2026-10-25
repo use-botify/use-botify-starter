@@ -1,0 +1,19 @@
+{
+	"$schema": "https://repomix.com/schemas/latest/schema.json",
+	"output": {
+		"filePath": "docs/botify-booster-context.md",
+		"style": "markdown",
+		"filePathStyle": "target-relative",
+		"fileSummary": true,
+		"directoryStructure": true,
+		"files": true,
+		"removeComments": false,
+		"showLineNumbers": true
+	},
+	"security": {
+		"enableSecurityCheck": true
+	},
+	"tokenCount": {
+		"encoding": "o200k_base"
+	}
+}
