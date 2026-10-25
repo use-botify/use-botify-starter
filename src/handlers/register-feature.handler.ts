@@ -31,13 +31,12 @@ export function registerFeatureHandler(
 			const access = resolveAccess(feature, command);
 
 			scopes[access].command(command.name, async (ctx) => {
-				logger.debug(
-					"Command",
-					`/${command.name} (${feature.name}:${access})`,
-					{
-						userId: ctx.from?.id,
-					},
-				);
+				logger.info("Command", `/${command.name}`, {
+					feature: feature.name,
+					access,
+					userId: ctx.from?.id,
+				});
+
 				await command.handler(ctx);
 			});
 
@@ -52,13 +51,12 @@ export function registerFeatureHandler(
 			const access = resolveAccess(feature, callback);
 
 			scopes[access].callbackQuery(callback.data, async (ctx) => {
-				logger.debug(
-					"Callback",
-					`${callback.data} (${feature.name}:${access})`,
-					{
-						userId: ctx.from?.id,
-					},
-				);
+				logger.info("Callback", callback.data, {
+					feature: feature.name,
+					access,
+					userId: ctx.from?.id,
+				});
+
 				await callback.handler(ctx);
 			});
 
@@ -72,9 +70,8 @@ export function registerFeatureHandler(
 
 	if (strictlyRestrictedCommands.length > 0) {
 		bot.command(strictlyRestrictedCommands, (ctx) => {
-			logger.debug("AccessControl", "Blocked a restricted command", {
+			logger.warn("Unauthorized", "Blocked a restricted command", {
 				userId: ctx.from?.id,
-				username: ctx.from?.username,
 				command: ctx.message?.text,
 			});
 		});
@@ -82,9 +79,8 @@ export function registerFeatureHandler(
 
 	if (restrictedCallbacks.length > 0) {
 		bot.callbackQuery(restrictedCallbacks, async (ctx) => {
-			logger.debug("AccessControl", "Blocked a restricted button", {
+			logger.warn("Unauthorized", "Blocked a restricted callback", {
 				userId: ctx.from?.id,
-				username: ctx.from?.username,
 				callback: ctx.callbackQuery.data,
 			});
 			await ctx.answerCallbackQuery().catch(() => undefined);

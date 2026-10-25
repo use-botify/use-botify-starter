@@ -16,14 +16,6 @@ export const publicFeature = defineFeature({
 				await ctx.reply("Start Command");
 			},
 		},
-		{
-			name: "stats",
-			description: "Bot statistics",
-			access: "public",
-			handler: async (ctx) => {
-				await ctx.reply("Public Stats…");
-			},
-		},
 	],
 	callbacks: [
 		{
