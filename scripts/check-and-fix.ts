@@ -1,4 +1,4 @@
-import { spawnSync } from "node:child_process";
+import spawn from "cross-spawn";
 
 import { logger } from "@/lib/logger";
 
@@ -42,9 +42,8 @@ const main = (): void => {
 		);
 
 		try {
-			const result = spawnSync(step.command, step.args, {
+			const result = spawn.sync(step.command, step.args, {
 				stdio: "inherit",
-				shell: process.platform === "win32",
 			});
 
 			if (result.error) {

@@ -30,8 +30,10 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.15",
+		"@types/cross-spawn": "^6.0.6",
 		"@types/node": "26.6.5",
 		"@types/pg": "8.23.1",
+		"cross-spawn": "^7.0.6",
 		"prisma": "7.10.1",
 		"repomix": "^1.18.1",
 		"tsx": "4.23.15",
