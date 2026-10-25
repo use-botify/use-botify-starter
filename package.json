@@ -3,8 +3,8 @@
 	"version": "1.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "tsx watch src/app.ts",
-		"start": "tsx src/app.ts",
+		"dev": "tsx watch src/main.ts",
+		"start": "tsx src/main.ts",
 		"typecheck": "tsc --noEmit",
 		"lint": "biome lint",
 		"format": "biome format --write",
@@ -14,7 +14,8 @@
 		"db:migrate": "prisma migrate dev",
 		"clean:modules": "tsx scripts/clean-modules.ts",
 		"docs:generate": "repomix",
-		"icon-cloner": "tsx scripts/icon-cloner.ts"
+		"icon-cloner": "tsx scripts/icon-cloner.ts",
+		"check:all": "tsx scripts/check-and-fix.ts"
 	},
 	"dependencies": {
 		"@grammyjs/auto-retry": "2.0.2",
