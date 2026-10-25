@@ -6,6 +6,7 @@ import type { BotCommand, Message, Sticker } from "grammy/types";
 
 import { bot as botInstance } from "@/lib/bot";
 import { logger } from "@/lib/logger";
+import { isDeveloperCtx } from "@/middleware/access-guard";
 
 const OUTPUT_PATH = resolve(process.cwd(), "src/lib", "icons.ts");
 const RELATIVE_OUTPUT_PATH = relative(process.cwd(), OUTPUT_PATH).replaceAll(
@@ -264,6 +265,17 @@ async function configureBotMenu(bot: Bot): Promise<void> {
 
 async function main(): Promise<void> {
 	const bot = botInstance;
+
+	bot.use(async (ctx, next) => {
+		if (!isDeveloperCtx(ctx)) {
+			logger.warn("[IconCloner]", "Ignored update from non-developer", {
+				updateId: ctx.update.update_id,
+				userId: ctx.from?.id,
+			});
+			return;
+		}
+		await next();
+	});
 
 	bot.command("start", async (ctx) => {
 		await ctx.reply(

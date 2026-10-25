@@ -5,18 +5,23 @@ import { logger } from "@/lib/logger";
 
 dotenv.config();
 
+const telegramUserId = (label: string) =>
+	z
+		.string()
+		.trim()
+		.regex(
+			/^\d+$/,
+			`${label} must be a numeric Telegram user ID (e.g. 1234567890)`,
+		)
+		.transform(Number)
+		.pipe(z.number().int().positive());
+
 const envSchema = z.object({
 	TELEGRAM_BOT_TOKEN: z
 		.string()
 		.min(1, { error: "TELEGRAM_BOT_TOKEN is required" }),
 	DATABASE_URL: z.url({ error: "A valid DATABASE_URL is required" }),
-	DEVELOPER_ID: z
-		.string()
-		.regex(
-			/^\d+$/,
-			"DEVELOPER_ID must be a numeric Telegram user ID (e.g. 1234567890)",
-		)
-		.transform(Number),
+	DEVELOPER_ID: telegramUserId("DEVELOPER_ID"),
 	ADMIN_IDS: z
 		.string()
 		.min(1, { error: "At least one ADMIN_ID is required" })
@@ -28,15 +33,7 @@ const envSchema = z.object({
 		)
 		.pipe(
 			z
-				.array(
-					z
-						.string()
-						.regex(
-							/^\d+$/,
-							"Each ADMIN_ID must be a numeric Telegram user ID (e.g. 1234567890)",
-						)
-						.transform(Number),
-				)
+				.array(telegramUserId("Each ADMIN_ID"))
 				.min(1, { error: "ADMIN_IDS must contain at least one valid ID" }),
 		)
 		.transform((ids) => new Set(ids)),
