@@ -10,7 +10,13 @@ const envSchema = z.object({
 		.string()
 		.min(1, { error: "TELEGRAM_BOT_TOKEN is required" }),
 	DATABASE_URL: z.url({ error: "A valid DATABASE_URL is required" }),
-	DEVELOPER_ID: z.string().min(1, { error: "DEVELOPER_ID is required" }),
+	DEVELOPER_ID: z
+		.string()
+		.regex(
+			/^\d+$/,
+			"DEVELOPER_ID must be a numeric Telegram user ID (e.g. 1234567890)",
+		)
+		.transform(Number),
 	ADMIN_IDS: z
 		.string()
 		.min(1, { error: "At least one ADMIN_ID is required" })

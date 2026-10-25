@@ -1,7 +1,7 @@
 {
 	"$schema": "https://repomix.com/schemas/latest/schema.json",
 	"output": {
-		"filePath": "docs/botify-booster-context.md",
+		"filePath": "docs/use-botify-starter-context.md",
 		"style": "markdown",
 		"filePathStyle": "target-relative",
 		"fileSummary": true,

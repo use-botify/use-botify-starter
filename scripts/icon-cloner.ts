@@ -133,7 +133,6 @@ function loadExistingRegistry(): Record<string, IconDetail> {
 
 	return JSON.parse(match[1]) as Record<string, IconDetail>;
 }
-
 function writeRegistry(registry: Record<string, IconDetail>): void {
 	mkdirSync(dirname(OUTPUT_PATH), { recursive: true });
 
@@ -147,32 +146,32 @@ function writeRegistry(registry: Record<string, IconDetail>): void {
 import type { InlineKeyboardButton } from "grammy/types";
 
 export interface IconDetail {
-  key: string;
-  customEmojiId: string;
-  fallback: string;
-  entity: { offset: number; length: number } | null;
-  sticker: {
-    fileId: string;
-    fileUniqueId: string;
-    emoji: string | null;
-    setName: string | null;
-    stickerType: string;
-    width: number;
-    height: number;
-    isAnimated: boolean;
-    isVideo: boolean;
-    format: "static" | "animated" | "video";
-  } | null;
-  receivedMessage: {
-    messageId: number;
-    chatId: string;
-    isForwarded: boolean;
-    forwardOriginType: string | null;
-  };
-  capturedAt: string;
+	key: string;
+	customEmojiId: string;
+	fallback: string;
+	entity: { offset: number; length: number } | null;
+	sticker: {
+		fileId: string;
+		fileUniqueId: string;
+		emoji: string | null;
+		setName: string | null;
+		stickerType: string;
+		width: number;
+		height: number;
+		isAnimated: boolean;
+		isVideo: boolean;
+		format: "static" | "animated" | "video";
+	} | null;
+	receivedMessage: {
+		messageId: number;
+		chatId: string;
+		isForwarded: boolean;
+		forwardOriginType: string | null;
+	};
+	capturedAt: string;
 }
 
-export const ICON_REGISTRY = ${JSON.stringify(sortedRegistry, null, 2)} as const satisfies Record<string, IconDetail>;
+export const ICON_REGISTRY = ${JSON.stringify(sortedRegistry, null, "\t")} as const satisfies Record<string, IconDetail>;
 
 export type IconName = keyof typeof ICON_REGISTRY;
 
@@ -180,22 +179,21 @@ export type IconName = keyof typeof ICON_REGISTRY;
  * Renders a saved Telegram custom emoji as an HTML <tg-emoji> tag.
  */
 export function renderIcon(name: IconName): string {
-  const icon = ICON_REGISTRY[name];
-  return \`<tg-emoji emoji-id="\${icon.customEmojiId}">\${icon.fallback}</tg-emoji>\`;
+	const icon = ICON_REGISTRY[name];
+	return \`<tg-emoji emoji-id="\${icon.customEmojiId}">\${icon.fallback}</tg-emoji>\`;
 }
 
 export function iconInlineButton(
-  iconName: IconName,
-  text: string,
-  data = "noop",
+	iconName: IconName,
+	text: string,
+	data = "noop",
 ): InlineKeyboardButton.CallbackButton {
-  return {
-    text,
-    callback_data: data,
-    icon_custom_emoji_id: ICON_REGISTRY[iconName].customEmojiId,
-  };
+	return {
+		text,
+		callback_data: data,
+		icon_custom_emoji_id: ICON_REGISTRY[iconName].customEmojiId,
+	};
 }
-
 `;
 
 	writeFileSync(OUTPUT_PATH, fileContents, "utf8");
