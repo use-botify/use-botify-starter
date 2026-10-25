@@ -1,7 +1,8 @@
 import { defineFeature } from "@/configs/feature.config";
+import { startCallback, startCommand } from "@/features/public/start";
 
 export const PUBLIC_CALLBACKS = {
-	refresh: "public:refresh",
+	refresh: "public:start",
 } as const;
 
 export const publicFeature = defineFeature({
@@ -10,20 +11,16 @@ export const publicFeature = defineFeature({
 	commands: [
 		{
 			name: "start",
-			description: "This is start command",
+			description: "This is the start command",
 			access: "public",
-			handler: async (ctx) => {
-				await ctx.reply("Start Command");
-			},
+			handler: startCommand,
 		},
 	],
 	callbacks: [
 		{
 			data: PUBLIC_CALLBACKS.refresh,
 			access: "public",
-			handler: async (ctx) => {
-				await ctx.editMessageText("Public Refreshed callback");
-			},
+			handler: startCallback,
 		},
 	],
 });

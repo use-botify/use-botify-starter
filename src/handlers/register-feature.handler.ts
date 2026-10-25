@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import type { Composer } from "grammy";
 
 import { type Feature, resolveAccess } from "@/configs/feature.config";
@@ -31,11 +32,15 @@ export function registerFeatureHandler(
 			const access = resolveAccess(feature, command);
 
 			scopes[access].command(command.name, async (ctx) => {
-				logger.info("Command", `/${command.name}`, {
-					feature: feature.name,
-					access,
-					userId: ctx.from?.id,
-				});
+				logger.info(
+					"Command",
+					chalk.bgGreenBright.black.bold(`/${command.name}`),
+					{
+						feature: feature.name,
+						access,
+						userId: ctx.from?.id,
+					},
+				);
 
 				await command.handler(ctx);
 			});

@@ -25,13 +25,15 @@ export type CallbackDefinition = {
 export type Feature = {
 	name: string;
 	access: Access;
-	commands?: readonly CommandDefinition[];
-	callbacks?: readonly CallbackDefinition[];
+	commands: readonly CommandDefinition[];
+	callbacks: readonly CallbackDefinition[];
 };
 
 export const defineFeature = <T extends Feature>(feature: T): T => feature;
 
 export const resolveAccess = (
 	feature: Feature,
-	item: { access?: Access },
+	item: {
+		access?: Access;
+	},
 ): Access => item.access ?? feature.access;
