@@ -1,7 +1,7 @@
 import type { BotCommand } from "grammy/types";
 
+import { ACCESS_RANK, type Access } from "@/configs/access.config";
 import { type Feature, resolveAccess } from "@/configs/feature.config";
-import { ACCESS_RANK, type Access } from "@/middlewares/access-guard";
 
 type Candidate = { description: string; rank: number; visible: boolean };
 

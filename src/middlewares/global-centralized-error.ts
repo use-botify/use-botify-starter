@@ -2,8 +2,8 @@ import { randomUUID } from "node:crypto";
 
 import { type BotError, type Context, GrammyError, HttpError } from "grammy";
 
-import { db } from "@/lib/database.prisma";
 import { logger } from "@/lib/logger";
+import { setUserActive } from "@/lib/users";
 
 const BENIGN_400 = [
 	"message is not modified",
@@ -31,13 +31,8 @@ export async function globalCentralizedError(
 	if (error instanceof GrammyError) {
 		if (error.error_code === 403) {
 			logger.info("TelegramBlocked", error.description, meta);
-			if (ctx.chat?.type === "private" && ctx.from?.id) {
-				await db.user
-					.updateMany({
-						where: { id: BigInt(ctx.from.id) },
-						data: { isActive: false },
-					})
-					.catch(() => undefined);
+			if (ctx.chat?.type === "private") {
+				await setUserActive(ctx.chat.id, false);
 			}
 			return;
 		}

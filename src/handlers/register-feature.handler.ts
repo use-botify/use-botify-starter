@@ -1,15 +1,34 @@
 import chalk from "chalk";
-import type { Composer } from "grammy";
+import type { CommandContext, Composer } from "grammy";
 
+import type { Access } from "@/configs/access.config";
 import { type Feature, resolveAccess } from "@/configs/feature.config";
 import type { BotContext } from "@/lib/bot";
 import { logger } from "@/lib/logger";
 import { validateFeatures } from "@/lib/validate-features";
-import {
-	type Access,
-	isUserAdmin,
-	isUserDeveloper,
-} from "@/middlewares/access-guard";
+import { isUserAdmin, isUserDeveloper } from "@/middlewares/access-guard";
+
+const MAX_TRACKED_MENU_RESETS = 10_000;
+const resetMenus = new Set<number>();
+
+const resetStaleMenu = async (
+	ctx: CommandContext<BotContext>,
+): Promise<void> => {
+	const chat = ctx.chat;
+	if (chat.type !== "private" || resetMenus.has(chat.id)) return;
+
+	if (resetMenus.size >= MAX_TRACKED_MENU_RESETS) resetMenus.clear();
+	resetMenus.add(chat.id);
+
+	await ctx.api
+		.deleteMyCommands({ scope: { type: "chat", chat_id: chat.id } })
+		.catch((error: unknown) => {
+			logger.warn("CommandMenu", "Could not reset a stale personal menu", {
+				userId: ctx.from?.id,
+				error,
+			});
+		});
+};
 
 export function registerFeatureHandler(
 	bot: Composer<BotContext>,
@@ -25,14 +44,14 @@ export function registerFeatureHandler(
 
 	const publicCommands = new Set<string>();
 	const restrictedCommands = new Set<string>();
-	const restrictedCallbacks: string[] = [];
+	const restrictedCallbacks: RegExp[] = [];
 
 	for (const feature of features) {
 		for (const command of feature.commands ?? []) {
 			const access = resolveAccess(feature, command);
 
 			scopes[access].command(command.name, async (ctx) => {
-				logger.info(
+				logger.debug(
 					"Command",
 					chalk.bgGreenBright.black.bold(`/${command.name}`),
 					{
@@ -54,19 +73,28 @@ export function registerFeatureHandler(
 
 		for (const callback of feature.callbacks ?? []) {
 			const access = resolveAccess(feature, callback);
+			const { route } = callback;
 
-			scopes[access].callbackQuery(callback.data, async (ctx) => {
-				logger.info("Callback", callback.data, {
+			scopes[access].callbackQuery(route.regex, async (ctx) => {
+				const params = route.match(ctx.callbackQuery.data);
+				if (!params) return;
+
+				logger.debug("Callback", route.pattern, {
 					feature: feature.name,
 					access,
 					userId: ctx.from?.id,
+					data: ctx.callbackQuery.data,
 				});
 
-				await callback.handler(ctx);
+				await callback.handler(ctx, params);
 			});
 
-			if (access !== "public") restrictedCallbacks.push(callback.data);
+			if (access !== "public") restrictedCallbacks.push(route.regex);
 		}
+	}
+
+	for (const feature of features) {
+		feature.setup?.(scopes[feature.access]);
 	}
 
 	const strictlyRestrictedCommands = [...restrictedCommands].filter(
@@ -74,11 +102,14 @@ export function registerFeatureHandler(
 	);
 
 	if (strictlyRestrictedCommands.length > 0) {
-		bot.command(strictlyRestrictedCommands, (ctx) => {
+		bot.command(strictlyRestrictedCommands, async (ctx) => {
 			logger.warn("Unauthorized", "Blocked a restricted command", {
 				userId: ctx.from?.id,
-				command: ctx.message?.text,
+				command: chalk.bgGreenBright.black.bold(
+					ctx.msg.text?.split(/\s/, 1)[0],
+				),
 			});
+			await resetStaleMenu(ctx);
 		});
 	}
 

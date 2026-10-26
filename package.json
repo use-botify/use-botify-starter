@@ -12,6 +12,8 @@
 		"postinstall": "prisma generate",
 		"db:generate": "prisma generate",
 		"db:migrate": "prisma migrate dev",
+		"db:deploy": "prisma migrate deploy",
+		"test": "tsx --test \"src/**/*.test.ts\"",
 		"clean:modules": "tsx scripts/clean-modules.ts",
 		"docs:generate": "repomix",
 		"check:all": "tsx scripts/check-and-fix.ts"
@@ -25,6 +27,8 @@
 		"dotenv": "18.0.8",
 		"grammy": "1.46.0",
 		"pg": "8.23.1",
+		"prisma": "7.10.1",
+		"tsx": "4.23.15",
 		"zod": "4.6.7"
 	},
 	"devDependencies": {
@@ -33,9 +37,7 @@
 		"@types/node": "26.6.5",
 		"@types/pg": "8.23.1",
 		"cross-spawn": "7.0.6",
-		"prisma": "7.10.1",
 		"repomix": "1.18.1",
-		"tsx": "4.23.15",
 		"typescript": "7.0.2"
 	},
 	"devEngines": {

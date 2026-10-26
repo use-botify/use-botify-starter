@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { logger } from "@/lib/logger";
 
-dotenv.config();
+dotenv.config({ quiet: true });
 
 const telegramUserId = (label: string) =>
 	z
@@ -40,6 +40,9 @@ const envSchema = z.object({
 	NODE_ENV: z
 		.enum(["development", "production", "test"])
 		.default("development"),
+	LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).optional(),
+	DB_POOL_MAX: z.coerce.number().int().min(1).max(100).default(10),
+	BOT_CONCURRENCY: z.coerce.number().int().min(1).max(500).default(50),
 });
 
 const parsed = envSchema.safeParse(process.env);

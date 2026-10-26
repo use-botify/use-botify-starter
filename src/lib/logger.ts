@@ -24,6 +24,27 @@ const LEVEL_STYLES: Record<LogLevel, { level: Style; message: Style }> = {
 	DEBUG: { level: chalk.cyan, message: chalk.white },
 };
 
+const LEVEL_PRIORITY: Record<LogLevel, number> = {
+	DEBUG: 0,
+	INFO: 1,
+	WARN: 2,
+	ERROR: 3,
+};
+
+const isLogLevel = (value: string): value is LogLevel =>
+	Object.hasOwn(LEVEL_PRIORITY, value);
+
+// Read lazily on purpose: env.config imports this module before dotenv has
+// loaded `.env`, and importing env.config from here would create a cycle.
+const minimumPriority = (): number => {
+	const configured = process.env.LOG_LEVEL?.toUpperCase();
+	if (configured && isLogLevel(configured)) return LEVEL_PRIORITY[configured];
+
+	return process.env.NODE_ENV === "production"
+		? LEVEL_PRIORITY.INFO
+		: LEVEL_PRIORITY.DEBUG;
+};
+
 type FormattedContext = { inline: string; details: string[] };
 
 const jsonReplacer = (_key: string, value: unknown): unknown => {
@@ -122,6 +143,8 @@ class Logger {
 		message: string,
 		context?: unknown,
 	): void {
+		if (LEVEL_PRIORITY[level] < minimumPriority()) return;
+
 		write(level, formatLine(level, step, message, context));
 	}
 

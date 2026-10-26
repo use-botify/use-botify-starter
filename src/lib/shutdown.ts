@@ -11,7 +11,7 @@ type ShutdownTask = {
 	timeoutMs?: number;
 };
 
-const FORCE_EXIT_MS = 8_000;
+const FORCE_EXIT_MARGIN_MS = 1_000;
 const DEFAULT_TASK_TIMEOUT_MS = 4_000;
 
 const tasks: ShutdownTask[] = [];
@@ -23,8 +23,22 @@ export const onShutdown = (task: ShutdownTask): void => {
 	tasks.push(task);
 };
 
+const taskTimeout = (task: ShutdownTask): number =>
+	task.timeoutMs ?? DEFAULT_TASK_TIMEOUT_MS;
+
+const forceExitBudgetMs = (): number =>
+	PHASES.reduce(
+		(total, phase) =>
+			total +
+			Math.max(
+				0,
+				...tasks.filter((task) => task.phase === phase).map(taskTimeout),
+			),
+		FORCE_EXIT_MARGIN_MS,
+	);
+
 const runWithTimeout = async (task: ShutdownTask): Promise<void> => {
-	const ms = task.timeoutMs ?? DEFAULT_TASK_TIMEOUT_MS;
+	const ms = taskTimeout(task);
 	let timer: NodeJS.Timeout | undefined;
 
 	const timeout = new Promise<never>((_, reject) => {
@@ -47,13 +61,11 @@ export const shutdown = async (reason: string, exitCode = 0): Promise<void> => {
 		`Received ${reason}. Running ${tasks.length} cleanup task(s)...`,
 	);
 
+	const forceExitMs = forceExitBudgetMs();
 	const forceExit = setTimeout(() => {
-		logger.error(
-			"Shutdown",
-			`Timed out after ${FORCE_EXIT_MS}ms. Forcing exit.`,
-		);
+		logger.error("Shutdown", `Timed out after ${forceExitMs}ms. Forcing exit.`);
 		process.exit(1);
-	}, FORCE_EXIT_MS).unref();
+	}, forceExitMs).unref();
 
 	let finalCode = exitCode;
 
@@ -77,6 +89,7 @@ export const shutdown = async (reason: string, exitCode = 0): Promise<void> => {
 	logger.info("Shutdown", `Finished with exit code ${finalCode}.`);
 	process.exit(finalCode);
 };
+
 export const installProcessHooks = (): void => {
 	logger.info(
 		"Process",

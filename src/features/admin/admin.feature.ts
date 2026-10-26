@@ -1,7 +1,8 @@
-import { defineFeature } from "@/configs/feature.config";
+import { defineCallback, defineFeature } from "@/configs/feature.config";
+import { defineCallbackRoute } from "@/lib/callback-route";
 
-export const ADMIN_CALLBACKS = {
-	refresh: "admin:refresh",
+export const ADMIN_ROUTES = {
+	refresh: defineCallbackRoute("admin:refresh"),
 } as const;
 
 export const adminFeature = defineFeature({
@@ -18,12 +19,12 @@ export const adminFeature = defineFeature({
 		},
 	],
 	callbacks: [
-		{
-			data: ADMIN_CALLBACKS.refresh,
+		defineCallback({
+			route: ADMIN_ROUTES.refresh,
 			access: "admin",
 			handler: async (ctx) => {
 				await ctx.editMessageText("Admin Refreshed callback");
 			},
-		},
+		}),
 	],
 });

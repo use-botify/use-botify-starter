@@ -1,20 +1,29 @@
+import { ACCESS_RANK, type Access } from "@/configs/access.config";
 import {
 	COMMAND_NAME,
 	FEATURE_NAME,
 	type Feature,
-	MAX_CALLBACK_BYTES,
 	MAX_MENU_COMMANDS,
 	resolveAccess,
 } from "@/configs/feature.config";
 import { buildCommandMenu } from "@/lib/build-command-menu";
+import type { RouteInfo } from "@/lib/callback-route";
 import { logger } from "@/lib/logger";
-import { ACCESS_RANK, type Access } from "@/middlewares/access-guard";
+
+const routesCollide = (a: RouteInfo, b: RouteInfo): boolean =>
+	a.segments.length === b.segments.length &&
+	a.segments.every((segment, index) => {
+		const other = b.segments[index];
+		if (!other) return false;
+		if (segment.kind === "param" || other.kind === "param") return true;
+		return segment.value === other.value;
+	});
 
 export function validateFeatures(features: readonly Feature[]): void {
 	const problems: string[] = [];
 	const featureNames = new Set<string>();
 	const commandOwners = new Map<string, string>();
-	const callbackOwners = new Map<string, string>();
+	const registeredRoutes: { route: RouteInfo; feature: string }[] = [];
 
 	for (const feature of features) {
 		if (!FEATURE_NAME.test(feature.name)) {
@@ -52,26 +61,29 @@ export function validateFeatures(features: readonly Feature[]): void {
 		}
 
 		for (const callback of feature.callbacks ?? []) {
-			const where = `Feature "${feature.name}", callback "${callback.data}"`;
-			const bytes = Buffer.byteLength(callback.data);
+			const { route } = callback;
+			const access = resolveAccess(feature, callback);
+			const where = `Feature "${feature.name}", callback "${route.pattern}" (${access})`;
+			const [first] = route.segments;
 
-			if (!callback.data.startsWith(`${feature.name}:`)) {
+			if (
+				route.segments.length < 2 ||
+				first?.kind !== "literal" ||
+				first.value !== feature.name
+			) {
 				problems.push(
-					`${where}: data must start with "${feature.name}:" so features never collide.`,
+					`${where}: pattern must start with "${feature.name}:" followed by at least one more segment, so features never collide.`,
 				);
 			}
-			if (bytes > MAX_CALLBACK_BYTES) {
-				problems.push(
-					`${where}: callback_data is ${bytes} bytes, Telegram allows at most ${MAX_CALLBACK_BYTES}.`,
-				);
-			}
 
-			const owner = callbackOwners.get(callback.data);
-			if (owner) {
-				problems.push(`${where}: already defined by feature "${owner}".`);
-			} else {
-				callbackOwners.set(callback.data, feature.name);
+			for (const existing of registeredRoutes) {
+				if (routesCollide(existing.route, route)) {
+					problems.push(
+						`${where}: collides with "${existing.route.pattern}" from feature "${existing.feature}", one callback_data could match both. Make a literal segment differ.`,
+					);
+				}
 			}
+			registeredRoutes.push({ route, feature: feature.name });
 		}
 	}
 

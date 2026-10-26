@@ -5,7 +5,7 @@ import { PrismaClient } from "@/generated/client";
 
 const adapter = new PrismaPg({
 	connectionString: env.DATABASE_URL,
-	max: 10,
+	max: env.DB_POOL_MAX,
 	idleTimeoutMillis: 30_000,
 	connectionTimeoutMillis: 5_000,
 });

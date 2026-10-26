@@ -9,17 +9,22 @@ interface RateLimiterOptions {
 	maxRequests: number;
 }
 
-type UserRateState = {
-	timestamps: number[];
-	warned: boolean;
+const DEFAULT_OPTIONS: RateLimiterOptions = {
+	intervalWindowMs: 3000,
+	maxRequests: 3,
 };
 
-export function rateLimiter(
-	{ intervalWindowMs, maxRequests }: RateLimiterOptions = {
-		intervalWindowMs: 3000,
-		maxRequests: 3,
-	},
-) {
+const CLEANUP_INTERVAL_MS = 60_000;
+
+interface UserRateState {
+	timestamps: number[];
+	warned: boolean;
+}
+
+export function rateLimiter({
+	intervalWindowMs,
+	maxRequests,
+}: RateLimiterOptions = DEFAULT_OPTIONS) {
 	const userStates = new Map<number, UserRateState>();
 
 	setInterval(() => {
@@ -37,7 +42,7 @@ export function rateLimiter(
 				});
 			}
 		}
-	}, 60_000).unref();
+	}, CLEANUP_INTERVAL_MS).unref();
 
 	return async (ctx: Context, next: NextFunction): Promise<void> => {
 		const userId = ctx.from?.id;

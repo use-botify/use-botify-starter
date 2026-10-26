@@ -66,11 +66,14 @@ const main = async (): Promise<void> => {
 				allowed_updates: ["message", "callback_query", "my_chat_member"],
 			},
 		},
+		sink: { concurrency: env.BOT_CONCURRENCY },
 	});
 
 	logger.info("BotInit", "Bot started and ready for commands", {
 		bot: `@${bot.botInfo.username}`,
 		botId: bot.botInfo.id,
+		concurrency: env.BOT_CONCURRENCY,
+		dbPoolMax: env.DB_POOL_MAX,
 	});
 
 	botRunner.task()?.catch((error: unknown) => {
