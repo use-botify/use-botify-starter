@@ -73,11 +73,11 @@ const main = async (): Promise<void> => {
     dbPoolMax: env.DB_POOL_MAX,
   });
 
-  logger.info("StartCommand", "Starting bot runner task...");
-  bot.command("start", async (ctx) => {
-    await ctx.reply("Hello! I'm your bot. How can I assist you today?");
-  });
-	logger.info("StartCommand", "bot start command registered successfully.")
+  // logger.info("StartCommand", "Starting bot runner task...");
+  // bot.command("start", async (ctx) => {
+  //   await ctx.reply("Hello! I'm your bot. How can I assist you today?");
+  // });
+	// logger.info("StartCommand", "bot start command registered successfully.")
 
   botRunner.task()?.catch((error: unknown) => {
     logger.error("Main", "Update runner stopped unexpectedly:", error);
