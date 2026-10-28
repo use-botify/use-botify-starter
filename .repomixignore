@@ -1,0 +1,16 @@
+# Generated files
+prisma/migrations/**
+src/generated/**
+dist/**
+coverage/**
+node_modules/**
+.vscode/
+.env
+
+# Generated AI documentation
+docs/**
+botify-booster-context.md
+
+# Included separately in the Repomix instruction section
+ai-context/**
+AGENTS.md
