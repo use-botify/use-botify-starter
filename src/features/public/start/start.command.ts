@@ -4,7 +4,7 @@ import type { User } from "grammy/types";
 import {
 	CONTACT_CHANNEL_URL,
 	TERMS_AND_CONDITION,
-} from "@/configs/content.config";
+} from "@/configs/constant.config";
 import type { BotCommandContext } from "@/core";
 import { iconCallbackButton, iconUrlButton } from "@/lib/icons";
 import { replyWithImage } from "@/lib/images";
@@ -33,7 +33,7 @@ export async function publicStartCommand(
 function buildStartText(user?: Pick<User, "username" | "first_name">): string {
 	return [
 		`Hey user, <b>${formatMention(user)}</b>`,
-		"Welcome to <b>Botify Booster</b> — boost your Telegram channels and groups quickly and reliably.",
+		"Welcome to <b>Botify Booster</b> - boost your Telegram channels and groups quickly and reliably.",
 		`<i>Using this bot you agree our <a href="${TERMS_AND_CONDITION}">Terms and condition</a> of Service</i>`,
 	].join("\n\n");
 }
