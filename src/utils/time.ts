@@ -1,3 +1,6 @@
+export const sleepTimer = (ms: number): Promise<void> =>
+	new Promise((resolve) => setTimeout(resolve, ms));
+
 const INDIA_TIME_ZONE = "Asia/Kolkata";
 
 const indiaDateTimeFormatter = new Intl.DateTimeFormat("en-IN", {

@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import pino, { type DestinationStream } from "pino";
 
-import { getIndianDateTime } from "@/utils/get-current-details";
+import { getIndianDateTime } from "@/utils/time";
 
 export const LOG_LEVELS = [
 	"silent",
