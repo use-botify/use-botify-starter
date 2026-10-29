@@ -5,6 +5,7 @@ import { env } from "@/configs/env.config";
 import { features } from "@/features";
 import { registerCommandMenusHandler } from "@/handlers/register-command-menu.handler";
 import { registerFeaturesHandlers } from "@/handlers/register-features.handler";
+import { registerIconsRegistryHandler } from "@/handlers/register-icons-registry.handler";
 import { bot } from "@/lib/bot";
 import { connectDatabase, disconnectDatabase } from "@/lib/database.prisma";
 import { logger } from "@/lib/logger";
@@ -48,6 +49,7 @@ const main = async (): Promise<void> => {
 	await connectDatabase();
 
 	// await loadIconRegistry();
+	await registerIconsRegistryHandler();
 
 	registerFeaturesHandlers(bot, features);
 	await registerCommandMenusHandler(bot.api, features);
