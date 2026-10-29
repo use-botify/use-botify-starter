@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import { type BotError, type Context, GrammyError, HttpError } from "grammy";
 
 import { logger } from "@/lib/logger";
-import { setUserActive } from "@/modules/set-user";
+import { setUserActive } from "@/services/user.service";
 
 const BENIGN_400 = [
 	"message is not modified",
