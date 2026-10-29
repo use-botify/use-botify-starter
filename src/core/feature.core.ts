@@ -16,7 +16,6 @@ type HandlerResult = unknown;
 export type CommandDefinition = {
 	name: string;
 	description: string;
-	useCase?: string;
 	access?: Access;
 	showInMenu?: boolean;
 	handler: (ctx: BotCommandContext) => HandlerResult;

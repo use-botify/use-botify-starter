@@ -10,6 +10,7 @@ export const publicFeature = defineFeature({
 	commands: [
 		defineCommand({
 			name: "start",
+			access: "public",
 			description: "Open the main menu",
 			handler: publicStartCommand,
 		}),

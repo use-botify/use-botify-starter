@@ -10,8 +10,8 @@ export const developerFeature = defineFeature({
 	commands: [
 		defineCommand({
 			name: "devtools",
-			description: "Developer tools",
 			access: "developer",
+			description: "Developer tools",
 			handler: developerDevtoolsCommand,
 		}),
 	],

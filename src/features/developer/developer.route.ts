@@ -5,7 +5,7 @@ import { defineCallbackRoute } from "@/core";
  * (to build inline keyboards) without importing the feature that imports them.
  */
 export const DEVELOPER_ROUTES = {
-	devtools: defineCallbackRoute("developer:devtools"),
-	close: defineCallbackRoute("developer:close"),
-	back: defineCallbackRoute("developer:back"),
+  devtools: defineCallbackRoute("developer:devtools"),
+  back: defineCallbackRoute("developer:back"),
+  close: defineCallbackRoute("developer:close"),
 } as const;

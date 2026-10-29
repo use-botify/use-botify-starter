@@ -6,6 +6,6 @@ import { defineCallbackRoute } from "@/core";
  */
 export const PUBLIC_ROUTES = {
 	start: defineCallbackRoute("public:start"),
-	cancel: defineCallbackRoute("public:cancel"),
 	back: defineCallbackRoute("public:back"),
+	close: defineCallbackRoute("public:close"),
 } as const;
