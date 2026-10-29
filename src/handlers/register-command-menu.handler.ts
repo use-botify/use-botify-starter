@@ -36,7 +36,7 @@ export function buildCommandMenu(
 		.map(([command, entry]) => ({ command, description: entry.description }));
 }
 
-export async function registerCommandMenusHandler(
+export async function registerCommandMenuHandler(
 	api: Api,
 	features: readonly Feature[],
 ): Promise<void> {

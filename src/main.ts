@@ -3,7 +3,7 @@ import { type RunnerHandle, run, sequentialize } from "@grammyjs/runner";
 
 import { env } from "@/configs/env.config";
 import { features } from "@/features";
-import { registerCommandMenusHandler } from "@/handlers/register-command-menu.handler";
+import { registerCommandMenuHandler } from "@/handlers/register-command-menu.handler";
 import { registerFeaturesHandlers } from "@/handlers/register-features.handler";
 import { registerIconsRegistryHandler } from "@/handlers/register-icons-registry.handler";
 import { bot } from "@/lib/bot";
@@ -51,7 +51,7 @@ const main = async (): Promise<void> => {
 	await registerIconsRegistryHandler();
 
 	registerFeaturesHandlers(bot, features);
-	await registerCommandMenusHandler(bot.api, features);
+	await registerCommandMenuHandler(bot.api, features);
 
 	await bot.api.deleteWebhook({
 		drop_pending_updates: env.NODE_ENV !== "production",
