@@ -20,24 +20,24 @@ export type ImageExtension = (typeof IMAGE_EXTENSIONS)[number];
 export const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
 
 export const SIGNATURES: Record<ImageExtension, readonly number[]> = {
-  ".jpg": [0xff, 0xd8, 0xff],
-  ".jpeg": [0xff, 0xd8, 0xff],
-  ".png": [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a],
+	".jpg": [0xff, 0xd8, 0xff],
+	".jpeg": [0xff, 0xd8, 0xff],
+	".png": [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a],
 };
 
 export interface LoadedImage {
-  data: Uint8Array;
-  filename: string;
+	data: Uint8Array;
+	filename: string;
 }
 
 export interface ImageLoadFailure {
-  name: ImageName;
-  reason: string;
+	name: ImageName;
+	reason: string;
 }
 
 export interface LoadImagesResult {
-  total: number;
-  loaded: ImageName[];
-  failed: ImageLoadFailure[];
-  bytes: number;
+	total: number;
+	loaded: ImageName[];
+	failed: ImageLoadFailure[];
+	bytes: number;
 }
