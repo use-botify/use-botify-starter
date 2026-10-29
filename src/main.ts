@@ -10,15 +10,14 @@ import { bot } from "@/lib/bot";
 import { connectDatabase, disconnectDatabase } from "@/lib/database.prisma";
 import { logger } from "@/lib/logger";
 import { installProcessHooks, onShutdown, shutdown } from "@/lib/shutdown";
-
-// import { autoAnswerCallback } from "@/middlewares/auto-answer-callback.middleware";
-// import { globalCentralizedError } from "@/middlewares/global-centralized-error.middleware";
-// import { rateLimiter } from "@/middlewares/rate-limiter.middleware";
+import { autoAnswerCallback } from "@/middlewares/auto-answer-callback.middleware";
+import { globalCentralizedError } from "@/middlewares/global-centralized-error.middleware";
+import { rateLimiter } from "@/middlewares/rate-limiter.middleware";
 
 bot.api.config.use(autoRetry({ maxRetryAttempts: 3, maxDelaySeconds: 10 }));
 
-// bot.use(autoAnswerCallback);
-// bot.use(rateLimiter({ intervalWindowMs: 3000, maxRequests: 3 }));
+bot.use(autoAnswerCallback);
+bot.use(rateLimiter({ intervalWindowMs: 3000, maxRequests: 3 }));
 bot.use(
 	sequentialize((ctx) => {
 		if (ctx.chat) return `chat:${ctx.chat.id}`;
@@ -27,7 +26,7 @@ bot.use(
 	}),
 );
 
-// bot.catch(globalCentralizedError);
+bot.catch(globalCentralizedError);
 
 let botRunner: RunnerHandle | undefined;
 
