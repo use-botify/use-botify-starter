@@ -6,7 +6,7 @@ node_modules
 
 # Generated
 /src/generated
-docs
+context
 dist
 coverage
 

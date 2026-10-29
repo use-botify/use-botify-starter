@@ -48,7 +48,6 @@ const main = async (): Promise<void> => {
 	await bot.init();
 	await connectDatabase();
 
-	// await loadIconRegistry();
 	await registerIconsRegistryHandler();
 
 	registerFeaturesHandlers(bot, features);
