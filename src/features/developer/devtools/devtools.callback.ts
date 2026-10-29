@@ -1,7 +1,7 @@
 import type { BotCallbackContext } from "@/core";
 
 export async function developerDevtoolsCallback(
-  ctx: BotCallbackContext,
+	ctx: BotCallbackContext,
 ): Promise<void> {
-  await ctx.reply("Developer tools callback");
+	await ctx.reply("Developer tools callback");
 }
