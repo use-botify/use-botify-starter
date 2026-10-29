@@ -1,6 +1,7 @@
 export const BOT_NAME = "Botify Booster";
 
-export const CONTACT_URL = "https://t.me/botify";
+export const CONTACT_CHANNEL_URL = "https://t.me/botify";
+export const TERMS_AND_CONDITION = "https://axisbuddy.com/terms";
 
 export const BOOST_PAYMENT_CURRENCIES = ["BTC", "SOL", "ETH"] as const;
 
