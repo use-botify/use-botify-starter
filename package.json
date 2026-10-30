@@ -4,7 +4,7 @@
 	"type": "module",
 	"scripts": {
 		"preinstall": "npx only-allow pnpm",
-		"dev": "tsx watch src/main.ts",
+		"dev": "tsx watch --exclude \"src/features/**\" src/main.ts --hmr",
 		"start": "tsx src/main.ts",
 		"docs:generate": "repomix",
 		"typecheck": "tsc --noEmit",
@@ -44,6 +44,7 @@
 		"only-allow": "^1.2.2",
 		"repomix": "1.18.1",
 		"typescript": "7.0.2",
+		"vite": "^8.3.5",
 		"vitest": "4.1.2"
 	},
 	"devEngines": {

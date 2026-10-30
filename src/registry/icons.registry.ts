@@ -179,6 +179,36 @@ export const DEFAULT_ICONS = {
 		},
 		capturedAt: "2026-10-28T13:48:11.504Z",
 	},
+	saved: {
+		key: "saved",
+		customEmojiId: "5222444124698853913",
+		fallback: "🔖",
+		entity: {
+			offset: 0,
+			length: 2,
+		},
+		capturedAt: "2026-10-29T13:59:00.673Z",
+	},
+	delete: {
+		key: "delete",
+		customEmojiId: "5445267414562389170",
+		fallback: "🗑",
+		entity: {
+			offset: 0,
+			length: 2,
+		},
+		capturedAt: "2026-10-29T13:59:17.842Z",
+	},
+	add: {
+		key: "add",
+		customEmojiId: "5397916757333654639",
+		fallback: "➕",
+		entity: {
+			offset: 0,
+			length: 1,
+		},
+		capturedAt: "2026-10-29T13:59:29.993Z",
+	},
 } as const satisfies Record<string, IconDetail>;
 
 export type RegisteredIconKey = keyof typeof DEFAULT_ICONS;

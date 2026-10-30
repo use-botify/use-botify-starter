@@ -2,9 +2,7 @@ import { autoRetry } from "@grammyjs/auto-retry";
 import { type RunnerHandle, run, sequentialize } from "@grammyjs/runner";
 
 import { env } from "@/configs/env.config";
-import { features } from "@/features";
 import { registerCommandMenuHandler } from "@/handlers/register-command-menu.handler";
-import { registerFeaturesHandlers } from "@/handlers/register-features.handler";
 import { registerIconsRegistryHandler } from "@/handlers/register-icons-registry.handler";
 import { registerImageHandler } from "@/handlers/register-image.handler";
 import { bot } from "@/lib/bot";
@@ -14,75 +12,101 @@ import { installProcessHooks, onShutdown, shutdown } from "@/lib/shutdown";
 import { autoAnswerCallback } from "@/middlewares/auto-answer-callback.middleware";
 import { globalCentralizedError } from "@/middlewares/global-centralized-error.middleware";
 import { rateLimiter } from "@/middlewares/rate-limiter.middleware";
+import {
+  hotModuleReplacementDispatcher,
+  replaceHotModuleReplacementMiddleware,
+  createHotModuleReplacementMiddleware,
+} from "@/middlewares/hot-module-replacement.middleware";
+
+const featureHmrEnabled =
+  env.NODE_ENV !== "production" && process.argv.includes("--hmr");
 
 bot.api.config.use(autoRetry({ maxRetryAttempts: 3, maxDelaySeconds: 10 }));
 
 bot.use(autoAnswerCallback);
 bot.use(rateLimiter({ intervalWindowMs: 3000, maxRequests: 3 }));
 bot.use(
-	sequentialize((ctx) => {
-		if (ctx.chat) return `chat:${ctx.chat.id}`;
-		if (ctx.from) return `user:${ctx.from.id}`;
-		return undefined;
-	}),
+  sequentialize((ctx) => {
+    if (ctx.chat) return `chat:${ctx.chat.id}`;
+    if (ctx.from) return `user:${ctx.from.id}`;
+    return undefined;
+  }),
 );
+bot.use(hotModuleReplacementDispatcher);
 
 bot.catch(globalCentralizedError);
 
 let botRunner: RunnerHandle | undefined;
 
 onShutdown({
-	name: "bot",
-	phase: "ingress",
-	run: async () => {
-		if (botRunner?.isRunning()) await botRunner.stop();
-	},
+  name: "bot",
+  phase: "ingress",
+  run: async () => {
+    if (botRunner?.isRunning()) await botRunner.stop();
+  },
 });
 onShutdown({
-	name: "database",
-	phase: "resources",
-	run: async () => await disconnectDatabase(),
+  name: "database",
+  phase: "resources",
+  run: async () => await disconnectDatabase(),
 });
 installProcessHooks();
 
 const main = async (): Promise<void> => {
-	await registerImageHandler();
+  await registerImageHandler();
 
-	await bot.init();
-	await connectDatabase();
+  await bot.init();
+  await connectDatabase();
 
-	await registerIconsRegistryHandler();
+  await registerIconsRegistryHandler();
 
-	registerFeaturesHandlers(bot, features);
-	await registerCommandMenuHandler(bot.api, features);
+  if (featureHmrEnabled) {
+    const { startHotModuleReplacement } =
+      await import("@/handlers/register-hot-module-replacement.handler");
+    const featuresHmr = await startHotModuleReplacement(bot.api);
 
-	await bot.api.deleteWebhook({
-		drop_pending_updates: env.NODE_ENV !== "production",
-	});
+    onShutdown({
+      name: "features-hmr",
+      phase: "resources",
+      run: featuresHmr.close,
+    });
+  } else {
+    const { features } = await import("@/features");
 
-	botRunner = run(bot, {
-		runner: {
-			fetch: {
-				allowed_updates: ["message", "callback_query"],
-			},
-		},
-		sink: { concurrency: env.BOT_CONCURRENCY },
-	});
+    replaceHotModuleReplacementMiddleware(
+      createHotModuleReplacementMiddleware(features),
+    );
 
-	logger.info("BotInit", "Bot started and ready for commands", {
-		bot: `@${bot.botInfo.username}`,
-		botId: bot.botInfo.id,
-		concurrency: env.BOT_CONCURRENCY,
-		dbPoolMax: env.DB_POOL_MAX,
-	});
+    await registerCommandMenuHandler(bot.api, features);
+  }
 
-	botRunner.task()?.catch((error: unknown) => {
-		logger.error("Main", "Update runner stopped unexpectedly:", error);
-		void shutdown("runnerCrashed", 1);
-	});
+  await bot.api.deleteWebhook({
+    drop_pending_updates: env.NODE_ENV !== "production",
+  });
+
+  botRunner = run(bot, {
+    runner: {
+      fetch: {
+        allowed_updates: ["message", "callback_query"],
+      },
+    },
+    sink: { concurrency: env.BOT_CONCURRENCY },
+  });
+
+  logger.info("BotInit", "Bot started and ready for commands", {
+    bot: `@${bot.botInfo.username}`,
+    botId: bot.botInfo.id,
+    concurrency: env.BOT_CONCURRENCY,
+    dbPoolMax: env.DB_POOL_MAX,
+  });
+
+  botRunner.task()?.catch((error: unknown) => {
+    logger.error("Main", "Update runner stopped unexpectedly:", error);
+    void shutdown("runnerCrashed", 1);
+  });
 };
 
 main().catch((error) => {
-	logger.error("Main", "Fatal error starting bot:", error);
-	void shutdown("fatalStartupError", 1);
+  logger.error("Main", "Fatal error starting bot:", error);
+  void shutdown("fatalStartupError", 1);
 });
