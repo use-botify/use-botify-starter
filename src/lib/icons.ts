@@ -42,7 +42,7 @@ export function renderIcon(key: IconKey): string {
  * Builds a Telegram inline callback button with a custom emoji icon.
  */
 
-export function iconCallbackButton(
+export function iconInlineButton(
 	iconKey: IconKey,
 	text: string,
 	callbackData = "noop",
@@ -56,10 +56,7 @@ export function iconCallbackButton(
 	};
 }
 
-/**
- * Alias for `iconCallbackButton` kept for existing call sites and tests.
- */
-export const iconInlineButton = iconCallbackButton;
+export const iconCallbackButton = iconInlineButton; // alias for backward compatibility
 
 /**
  * Builds a Telegram inline URL button with a custom emoji icon.

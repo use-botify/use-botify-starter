@@ -1,6 +1,6 @@
 import type { Context } from "grammy";
 
-import type { BotCommandContext } from "@/core";
+import type { BotCallbackContext, BotCommandContext } from "@/core";
 import {
 	ICON_REGISTRY,
 	type IconDetail,
@@ -15,6 +15,12 @@ const EMPTY_REGISTRY_TEXT =
 
 export async function developerListIconCommand(
 	ctx: BotCommandContext,
+): Promise<void> {
+	await replySavedIcons(ctx);
+}
+
+export async function developerListIconCallback(
+	ctx: BotCallbackContext,
 ): Promise<void> {
 	await replySavedIcons(ctx);
 }
