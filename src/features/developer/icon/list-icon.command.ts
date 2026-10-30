@@ -13,7 +13,7 @@ const MAX_PAGE_LENGTH = 3_500;
 const EMPTY_REGISTRY_TEXT =
 	"Your icon registry is empty. Reply to a message containing custom emoji with /add_icon <icon_name>.";
 
-export async function developerSavedIconCommand(
+export async function developerListIconCommand(
 	ctx: BotCommandContext,
 ): Promise<void> {
 	await replySavedIcons(ctx);

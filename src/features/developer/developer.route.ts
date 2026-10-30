@@ -10,6 +10,6 @@ export const DEVELOPER_ROUTES = {
 	back: defineCallbackRoute("developer:back"),
 
 	// Icons Callbacks
-	guide: defineCallbackRoute("developer:guide:{command}"),
-	execute: defineCallbackRoute("developer:execute:{command}"),
+	guide: defineCallbackRoute("developer:guide:{command_name}"),
+	execute: defineCallbackRoute("developer:execute:{command_name}"),
 } as const;
