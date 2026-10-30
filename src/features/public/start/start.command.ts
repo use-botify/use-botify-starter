@@ -13,7 +13,7 @@ import {
 	isUserDeveloper,
 } from "@/middlewares/access-guard.middleware";
 import { upsertUserProfile } from "@/services/user.service";
-import { formatMention } from "@/utils/format-mention";
+import { formatUserMention } from "@/utils/format-user-mention";
 
 export async function publicStartCommand(
 	ctx: BotCommandContext,
@@ -32,7 +32,7 @@ export async function publicStartCommand(
 
 function buildStartText(user?: Pick<User, "username" | "first_name">): string {
 	return [
-		`Hey user, <b>${formatMention(user)}</b>`,
+		`Hey user, <b>${formatUserMention(user)}</b>`,
 		"Welcome to <b>Botify Booster</b> - boost your Telegram channels and groups quickly and reliably.",
 		`<i>Using this bot you agree our <a href="${TERMS_AND_CONDITION}">Terms and condition</a> of Service</i>`,
 	].join("\n\n");

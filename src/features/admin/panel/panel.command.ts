@@ -2,7 +2,7 @@ import type { User } from "grammy/types";
 
 import type { BotCommandContext } from "@/core";
 import { buildAdminPanelKeyboard } from "@/features/admin/panel/panel.build";
-import { formatMention } from "@/utils/format-mention";
+import { formatUserMention } from "@/utils/format-user-mention";
 
 export async function adminPanelCommand(ctx: BotCommandContext): Promise<void> {
 	await ctx.reply(buildAdminPanelText(ctx.from), {
@@ -15,7 +15,7 @@ function buildAdminPanelText(
 	user?: Pick<User, "username" | "first_name">,
 ): string {
 	return [
-		`Hey admin, <b>${formatMention(user)}</b>`,
+		`Hey admin, <b>${formatUserMention(user)}</b>`,
 		"Welcome to the <b>Admin Panel</b>. From here you can inspect available admin commands and manage bot operations.",
 	].join("\n\n");
 }
