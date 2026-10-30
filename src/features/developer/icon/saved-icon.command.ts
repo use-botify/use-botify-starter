@@ -43,17 +43,17 @@ export async function replySavedIcons(
 
 	if (current) pages.push(current);
 
-	pages.map(
-		(page, index) =>
-			`${index === 0 ? "🎨 Registered Icons" : "🎨 Registered Icons (continued)"}\n\n${page}`,
-	);
-
 	if (pages.length === 0) {
 		await ctx.reply(EMPTY_REGISTRY_TEXT);
 		return;
 	}
 
-	for (const page of pages) {
+	const formattedPages = pages.map(
+		(page, index) =>
+			`${index === 0 ? "🎨 Registered Icons" : "🎨 Registered Icons (continued)"}\n\n${page}`,
+	);
+
+	for (const page of formattedPages) {
 		await ctx.reply(page, { parse_mode: "HTML" });
 	}
 }

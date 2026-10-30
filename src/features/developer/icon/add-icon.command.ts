@@ -14,7 +14,7 @@ export async function developerAddIconCommand(
 
 	if (!repliedMessage) {
 		await ctx.reply(
-			"Reply to a message containing custom emoji with /grab [icon_name].",
+			"Reply to a message containing custom emoji with /add_icon <icon_name>.",
 		);
 		return;
 	}

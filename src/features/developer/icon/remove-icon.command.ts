@@ -11,7 +11,7 @@ export async function developerRemoveIconCommand(
 
 	if (!key) {
 		await ctx.reply(
-			"Usage: /remove <icon_key>\n\nUse /list to see registered icon keys.",
+			"Usage: /remove_icon <icon_name>\n\nUse /list_icons to see registered icon keys.",
 		);
 		return;
 	}
@@ -19,7 +19,7 @@ export async function developerRemoveIconCommand(
 	const existing = ICON_REGISTRY[key];
 	if (!existing) {
 		await ctx.reply(
-			`Icon "${key}" was not found. Use /list to see registered icons.`,
+			`Icon "${key}" was not found. Use /list_icons to see registered icons.`,
 		);
 		return;
 	}
