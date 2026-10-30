@@ -1,5 +1,5 @@
 // This file is auto-synced by src/handlers/register-icons-registry.handler.ts.
-// Do not edit DEFAULT_ICONS manually; use /grab_icon or /remove_icon to update icons.
+// Do not edit DEFAULT_ICONS manually; use /add_icon or /remove_icon to update icons.
 
 export type IconStickerFormat = "static" | "animated" | "video";
 
