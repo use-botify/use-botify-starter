@@ -4,39 +4,39 @@ import { persistIconRegistry } from "@/handlers/register-icons-registry.handler"
 import { ICON_REGISTRY } from "@/lib/icons";
 
 export async function developerRemoveIconCommand(
-  ctx: BotCommandContext,
+	ctx: BotCommandContext,
 ): Promise<void> {
-  const rawKey = ctx.match.trim();
-  const key = normalizeIconKey(rawKey) || rawKey;
+	const rawKey = ctx.match.trim();
+	const key = normalizeIconKey(rawKey) || rawKey;
 
-  if (!key) {
-    await ctx.reply(
-      "Usage: /remove <icon_key>\n\nUse /list to see registered icon keys.",
-    );
-    return;
-  }
+	if (!key) {
+		await ctx.reply(
+			"Usage: /remove <icon_key>\n\nUse /list to see registered icon keys.",
+		);
+		return;
+	}
 
-  const existing = ICON_REGISTRY[key];
-  if (!existing) {
-    await ctx.reply(
-      `Icon "${key}" was not found. Use /list to see registered icons.`,
-    );
-    return;
-  }
+	const existing = ICON_REGISTRY[key];
+	if (!existing) {
+		await ctx.reply(
+			`Icon "${key}" was not found. Use /list to see registered icons.`,
+		);
+		return;
+	}
 
-  delete ICON_REGISTRY[key];
+	delete ICON_REGISTRY[key];
 
-  try {
-    await persistIconRegistry();
-  } catch (error) {
-    ICON_REGISTRY[key] = existing;
-    await ctx.reply(
-      `Could not persist the registry: ${
-        error instanceof Error ? error.message : "Unknown error"
-      }`,
-    );
-    return;
-  }
+	try {
+		await persistIconRegistry();
+	} catch (error) {
+		ICON_REGISTRY[key] = existing;
+		await ctx.reply(
+			`Could not persist the registry: ${
+				error instanceof Error ? error.message : "Unknown error"
+			}`,
+		);
+		return;
+	}
 
-  await ctx.reply(`Icon "${key}" was removed.`);
+	await ctx.reply(`Icon "${key}" was removed.`);
 }
