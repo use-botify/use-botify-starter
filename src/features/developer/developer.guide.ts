@@ -14,7 +14,7 @@ const DEVELOPER_GUIDES = {
 		route: "/add_icon",
 		use_case: "Use when you have to add a new icon in your icons library",
 		steps: [
-			'Reply to your icon with "/add_icon <name of icon>"',
+			'Reply to your icon with "/grab_icon <name of icon>"',
 			"Icon saved in your library.",
 		],
 	},

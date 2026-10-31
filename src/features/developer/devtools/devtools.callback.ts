@@ -10,16 +10,25 @@ import { buildGuidePanel, buildPanelGreeting } from "@/features/shared";
 export const developerDevtoolsCallbacks = async (ctx: BotCallbackContext) => {
 	await ctx.answerCallbackQuery();
 
-	const { caption, keyboard } = buildDevtoolsPanel(ctx.from);
+	const { caption, keyboard } = buildDevtoolsPanel(ctx.from, "callback");
 
-	await ctx.editMessageText(
-		`${buildPanelGreeting("developer", ctx.from, DEVTOOLS_DESCRIPTION)}\n\n${caption}`,
+	await ctx.editMessageText(caption, {
+		parse_mode: "HTML",
+		reply_markup: keyboard,
+	});
+};
 
-		{
-			parse_mode: "HTML",
-			reply_markup: keyboard,
-		},
-	);
+export const developerDevtoolsGuideCallbacks = async (
+	ctx: BotCallbackContext,
+) => {
+	await ctx.answerCallbackQuery();
+
+	const { caption, keyboard } = buildDevtoolsPanel(ctx.from, "command");
+
+	await ctx.editMessageText(caption, {
+		parse_mode: "HTML",
+		reply_markup: keyboard,
+	});
 };
 
 export const developerGuideCallback = async (
@@ -27,6 +36,7 @@ export const developerGuideCallback = async (
 	command_name: string,
 ) => {
 	const guide = getDeveloperGuide(command_name);
+
 	if (!guide) {
 		await ctx.answerCallbackQuery({
 			text: "Unknown command.",
@@ -35,8 +45,10 @@ export const developerGuideCallback = async (
 		return;
 	}
 
+	await ctx.answerCallbackQuery();
+
 	const panel = buildGuidePanel(guide, {
-		back: DEVELOPER_ROUTES.devtools.build(),
+		back: DEVELOPER_ROUTES.devtools_guide.build(),
 		execute: guide.execute
 			? DEVELOPER_ROUTES.execute.build({ command_name })
 			: undefined,

@@ -6,8 +6,8 @@ import {
 	TERMS_AND_CONDITION,
 } from "@/configs/constant.config";
 import type { BotCommandContext } from "@/core";
+import { DEVELOPER_ROUTES } from "@/features/developer/developer.route";
 import { iconCallbackButton, iconUrlButton } from "@/lib/icons";
-import { replyWithImage } from "@/lib/images";
 import {
 	isUserAdmin,
 	isUserDeveloper,
@@ -23,14 +23,15 @@ export async function publicStartCommand(
 
 	await upsertUserProfile(user);
 
-	await replyWithImage(ctx, "welcome", {
-		caption: buildStartText(user),
+	await ctx.reply(buildStartText(user), {
 		reply_markup: buildStartKeyboard(user.id),
 		parse_mode: "HTML",
 	});
 }
 
-function buildStartText(user?: Pick<User, "username" | "first_name">): string {
+export function buildStartText(
+	user?: Pick<User, "username" | "first_name">,
+): string {
 	return [
 		`Hey user, <b>${formatUserMention(user)}</b>`,
 		"Welcome to <b>Botify Booster</b> - boost your Telegram channels and groups quickly and reliably.",
@@ -38,7 +39,7 @@ function buildStartText(user?: Pick<User, "username" | "first_name">): string {
 	].join("\n\n");
 }
 
-function buildStartKeyboard(userId: number): InlineKeyboard {
+export function buildStartKeyboard(userId: number): InlineKeyboard {
 	const keyboard = new InlineKeyboard()
 		.add(iconCallbackButton("buy", "Buy Boost"))
 		.row()
@@ -50,7 +51,15 @@ function buildStartKeyboard(userId: number): InlineKeyboard {
 	}
 
 	if (isUserDeveloper(userId)) {
-		keyboard.row().add(iconCallbackButton("settings", "Devtools"));
+		keyboard
+			.row()
+			.add(
+				iconCallbackButton(
+					"settings",
+					"Devtools",
+					DEVELOPER_ROUTES.devtools.build(),
+				),
+			);
 	}
 
 	return keyboard;

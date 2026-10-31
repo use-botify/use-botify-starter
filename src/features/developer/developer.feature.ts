@@ -4,6 +4,11 @@ import {
 	developerDevtoolsCallbacks,
 	developerDevtoolsCommand,
 } from "@/features/developer/devtools";
+import {
+	developerDevtoolsGuideCallbacks,
+	developerExecuteCallback,
+	developerGuideCallback,
+} from "@/features/developer/devtools/devtools.callback";
 /**
  * @import commands and callbacks under this
  */
@@ -13,11 +18,6 @@ import {
 	developerRemoveIconCommand,
 } from "@/features/developer/icon";
 import { sharedCloseCallback } from "@/features/shared";
-
-import {
-	developerExecuteCallback,
-	developerGuideCallback,
-} from "./devtools/devtools.callback";
 
 export const developerFeature = defineFeature({
 	name: "developer",
@@ -55,15 +55,22 @@ export const developerFeature = defineFeature({
 			handler: developerDevtoolsCallbacks,
 		}),
 		defineCallback({
+			route: DEVELOPER_ROUTES.devtools_guide,
+			access: "developer",
+			handler: developerDevtoolsGuideCallbacks,
+		}),
+		defineCallback({
 			route: DEVELOPER_ROUTES.guide,
+			access: "developer",
 			handler: async (ctx, { command_name }) => {
-				developerGuideCallback(ctx, command_name);
+				await developerGuideCallback(ctx, command_name);
 			},
 		}),
 		defineCallback({
 			route: DEVELOPER_ROUTES.execute,
+			access: "developer",
 			handler: async (ctx, { command_name }) => {
-				developerExecuteCallback(ctx, command_name);
+				await developerExecuteCallback(ctx, command_name);
 			},
 		}),
 		defineCallback({

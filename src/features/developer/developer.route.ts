@@ -8,6 +8,7 @@ import { defineCallbackRoute } from "@/core";
  */
 export const DEVELOPER_ROUTES = {
 	devtools: defineCallbackRoute("developer:devtools"),
+	devtools_guide: defineCallbackRoute("developer:devtools_guide"),
 	close: defineCallbackRoute("developer:close"),
 	guide: defineCallbackRoute("developer:guide:{command_name}"),
 	execute: defineCallbackRoute("developer:execute:{command_name}"),
