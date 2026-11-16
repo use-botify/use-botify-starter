@@ -25,21 +25,35 @@ function run(cwd: string, command: string, args: string[]) {
     child.on("close", (code) =>
       code === 0
         ? resolve()
-        : reject(new Error(`\`${line}\` exited with code ${code}\n${output.trim()}`))
+        : reject(
+            new Error(`\`${line}\` exited with code ${code}\n${output.trim()}`)
+          )
     )
   })
 }
 
-async function install(cwd: string, label: string, packages: string[], dev: boolean) {
+async function install(
+  cwd: string,
+  label: string,
+  packages: string[],
+  dev: boolean
+) {
   if (packages.length === 0) return
 
-  p.log.step(`Installing ${label}:\n${packages.map((name) => `- ${name}`).join("\n")}`)
+  p.log.step(
+    `Installing ${label}:\n${packages.map((name) => `- ${name}`).join("\n")}`
+  )
 
   const spinner = p.spinner()
   spinner.start(`pnpm add${dev ? " -D" : ""}`)
 
   try {
-    await run(cwd, "pnpm", ["add", "--save-exact", ...(dev ? ["--save-dev"] : []), ...packages])
+    await run(cwd, "pnpm", [
+      "add",
+      "--save-exact",
+      ...(dev ? ["--save-dev"] : []),
+      ...packages,
+    ])
     spinner.stop(`Installed ${label}`)
   } catch (error) {
     spinner.error(`Failed to install ${label}`)
@@ -68,12 +82,17 @@ async function pinVersions(dir: string) {
 async function assertEmpty(dir: string) {
   const entries = await readdir(dir).catch(() => [] as string[])
   if (entries.some((name) => name !== ".git")) {
-    throw new Error(`${dir} is not empty. Choose another name or an empty folder.`)
+    throw new Error(
+      `${dir} is not empty. Choose another name or an empty folder.`
+    )
   }
 }
 
 const toPackageName = (dir: string) =>
-  path.basename(dir).toLowerCase().replace(/[^a-z0-9._~-]/g, "-")
+  path
+    .basename(dir)
+    .toLowerCase()
+    .replace(/[^a-z0-9._~-]/g, "-")
 
 export async function scaffoldProject() {
   const answers = await runCliPrompts()

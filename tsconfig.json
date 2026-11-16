@@ -1,8 +1,7 @@
 {
-  "extends": "./tsconfig.base.json",
-  "files": [],
-  "references": [
-    { "path": "./packages/icons" },
-    { "path": "./packages/create-use-botify" }
-  ]
+  "extends": "@workspace/typescript-config/node.json",
+  "compilerOptions": {
+    "allowJs": true
+  },
+  "include": ["*.mjs", "scripts"]
 }

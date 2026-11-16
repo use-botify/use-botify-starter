@@ -61,7 +61,9 @@ export function resolveDependencies(answers: Answers) {
   return {
     dependencies: matched.flatMap((rule) => rule.dependencies ?? []),
     devDependencies: matched.flatMap((rule) => rule.devDependencies ?? []),
-    allowBuilds: [...new Set(matched.flatMap((rule) => rule.allowBuilds ?? []))],
+    allowBuilds: [
+      ...new Set(matched.flatMap((rule) => rule.allowBuilds ?? [])),
+    ],
   }
 }
 

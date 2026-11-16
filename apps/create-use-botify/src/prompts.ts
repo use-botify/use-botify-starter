@@ -23,9 +23,7 @@ const validateWith = (schema: z.ZodType) => (value: string | undefined) => {
 }
 
 export async function runCliPrompts(): Promise<Answers> {
-  p.intro(
-    styleText(["bgCyan", "black"], ` create-use-botify v${pkg.version} `)
-  )
+  p.intro(styleText(["bgCyan", "black"], ` create-use-botify v${pkg.version} `))
 
   const answers = await p.group(
     {
@@ -71,7 +69,10 @@ export async function runCliPrompts(): Promise<Answers> {
       ),
       adminFeatures: confirm("Would you like admin features?", true),
       developerFeatures: confirm("Would you like developer features?", true),
-      srcDir: confirm("Would you like your code inside a `src/` directory?", true),
+      srcDir: confirm(
+        "Would you like your code inside a `src/` directory?",
+        true
+      ),
       vitest: confirm("Would you like to use `vitest` test with it?", false),
       repomix: confirm(
         "Would you like to use `repomix` for context to the `ai`?",

@@ -3,29 +3,37 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@12.21.0",
   "engines": {
     "node": ">=24.0.0"
   },
   "scripts": {
-    "build": "pnpm -r build",
-    "dev": "pnpm -r dev",
+    "dev:cli": "pnpm --filter create-use-botify dev",
+    "build": "pnpm -r --if-present build",
+    "typecheck": "tsc --noEmit && pnpm -r --if-present typecheck",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc -b",
+    "fix": "tsx scripts/fix-and-clean.mts",
+    "clean": "tsx scripts/clean-modules.mts",
     "docs:generate": "repomix"
   },
   "devDependencies": {
-    "@eslint/js": "9.15.0",
-    "@ianvs/prettier-plugin-sort-imports": "4.4.0",
-    "@types/node": "24.0.0",
-    "eslint": "9.15.0",
-    "eslint-config-prettier": "9.1.0",
-    "globals": "15.12.0",
-    "prettier": "3.3.3",
-    "repomix": "0.2.15",
-    "typescript": "5.7.2",
-    "typescript-eslint": "8.15.0"
+    "@eslint/js": "10.0.1",
+    "@ianvs/prettier-plugin-sort-imports": "4.7.1",
+    "@types/cross-spawn": "6.0.6",
+    "@types/node": "catalog:",
+    "@workspace/logger": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "cross-spawn": "7.0.6",
+    "eslint": "10.15.0",
+    "eslint-config-prettier": "10.1.8",
+    "globals": "17.14.0",
+    "prettier": "3.10.1",
+    "repomix": "1.19.0",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "typescript-eslint": "8.72.2"
   }
 }
