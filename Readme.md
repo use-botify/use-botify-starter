@@ -1,1 +1,0 @@
-## Botify Starter repository
