@@ -2,7 +2,7 @@ import { cp, mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import type { ScaffoldAnswers } from "./prompts.js";
+import type { ScaffoldAnswers } from "@/prompts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
