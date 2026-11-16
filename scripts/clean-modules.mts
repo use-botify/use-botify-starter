@@ -49,7 +49,10 @@ async function assertProjectRoot(projectRoot: string): Promise<void> {
       throw new Error("package.json must contain a JSON object.")
     }
   } catch (error: unknown) {
-    throw new Error(`Project root validation failed: ${getErrorMessage(error)}`)
+    throw new Error(
+      `Project root validation failed: ${getErrorMessage(error)}`,
+      { cause: error }
+    )
   }
 }
 
@@ -71,7 +74,8 @@ async function removeModules(modulesPath: string): Promise<void> {
   } catch (error: unknown) {
     if (getErrorCode(error) === "ENOENT") return
     throw new Error(
-      `Unable to inspect ${modulesPath}: ${getErrorMessage(error)}`
+      `Unable to inspect ${modulesPath}: ${getErrorMessage(error)}`,
+      { cause: error }
     )
   }
 
@@ -92,7 +96,8 @@ async function removeModules(modulesPath: string): Promise<void> {
     })
   } catch (error: unknown) {
     throw new Error(
-      `Failed to remove ${modulesPath}: ${getErrorMessage(error)}`
+      `Failed to remove ${modulesPath}: ${getErrorMessage(error)}`,
+      { cause: error }
     )
   }
 

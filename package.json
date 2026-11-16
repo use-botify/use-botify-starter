@@ -15,25 +15,25 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "fix": "tsx scripts/fix-and-clean.mts",
-    "clean": "tsx scripts/clean-modules.mts",
-    "docs:generate": "repomix"
+    "script:check:all": "tsx scripts/fix-and-clean.mts",
+    "script:clean:modules": "tsx scripts/clean-modules.mts",
+    "script:generate:docs": "repomix"
   },
   "devDependencies": {
-    "@eslint/js": "10.0.1",
+    "@workspace/typescript-config": "workspace:*",
+    "@workspace/logger": "workspace:*",
     "@ianvs/prettier-plugin-sort-imports": "4.7.1",
+    "eslint-config-prettier": "10.1.8",
     "@types/cross-spawn": "6.0.6",
     "@types/node": "catalog:",
-    "@workspace/logger": "workspace:*",
-    "@workspace/typescript-config": "workspace:*",
+    "@eslint/js": "10.0.1",
     "cross-spawn": "7.0.6",
     "eslint": "10.15.0",
-    "eslint-config-prettier": "10.1.8",
     "globals": "17.14.0",
     "prettier": "3.10.1",
     "repomix": "1.19.0",
-    "tsx": "catalog:",
     "typescript": "catalog:",
+    "tsx": "catalog:",
     "typescript-eslint": "8.72.2"
   }
 }
