@@ -53,7 +53,7 @@ const rules: Rule[] = [
   },
   { when: (a) => a.vitest, devDependencies: ["vitest"] },
   { when: (a) => a.repomix, devDependencies: ["repomix"] },
-  { when: (a) => a.icons, dependencies: ["@botify/icons"] },
+  { when: (a) => a.icons, dependencies: ["@use-botify/icons"] },
 ]
 
 export function resolveDependencies(answers: Answers) {
