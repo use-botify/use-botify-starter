@@ -1,6 +1,6 @@
-import { defineConfig, type UserConfig } from "tsdown";
+import { defineConfig, type UserConfig } from "tsdown"
 
-export { defineConfig, type UserConfig };
+export { defineConfig, type UserConfig }
 
 const BASE_CONFIG: UserConfig = {
   entry: ["src/index.ts"],
@@ -9,11 +9,11 @@ const BASE_CONFIG: UserConfig = {
   target: "es2024",
   clean: true,
   fixedExtension: false,
-};
+}
 
 function mergeConfig(base: UserConfig, overrides?: UserConfig): UserConfig {
   if (!overrides) {
-    return base;
+    return base
   }
 
   return {
@@ -27,7 +27,7 @@ function mergeConfig(base: UserConfig, overrides?: UserConfig): UserConfig {
           },
         }
       : {}),
-  };
+  }
 }
 
 export function createLibraryConfig(overrides?: UserConfig): UserConfig {
@@ -38,9 +38,9 @@ export function createLibraryConfig(overrides?: UserConfig): UserConfig {
         platform: "neutral",
         dts: true,
       },
-      overrides,
-    ),
-  );
+      overrides
+    )
+  )
 }
 
 export function createCliConfig(overrides?: UserConfig): UserConfig {
@@ -51,7 +51,7 @@ export function createCliConfig(overrides?: UserConfig): UserConfig {
         platform: "node",
         dts: false,
       },
-      overrides,
-    ),
-  );
+      overrides
+    )
+  )
 }
