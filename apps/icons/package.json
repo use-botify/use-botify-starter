@@ -1,0 +1,49 @@
+{
+  "name": "@botify/icons",
+  "version": "1.0.0",
+  "description": "Typed Telegram custom-emoji icon registry and helpers for Botify bots",
+  "type": "module",
+  "sideEffects": false,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sahilkumardev/use-botify.git",
+    "directory": "apps/icons"
+  },
+  "keywords": [
+    "telegram",
+    "grammy",
+    "custom-emoji",
+    "icons"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "prepublishOnly": "pnpm build",
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "grammy": ">=1.46.0"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@workspace/typescript-config": "workspace:*",
+    "grammy": "1.46.0",
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
+  }
+}
