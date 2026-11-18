@@ -1,41 +1,41 @@
-import type { InlineKeyboardButton } from "grammy/types";
+import type { InlineKeyboardButton } from "grammy/types"
 
+import { escapeHtml } from "@/utils/escape-html"
 import {
-	ICON_REGISTRY,
-	type IconDetail,
-	type IconKey,
-	type IconName,
-	type RegisteredIconKey,
-} from "@/registry/icons.registry";
-import { escapeHtml } from "@/utils/escape-html";
+  ICON_REGISTRY,
+  type IconDetail,
+  type IconKey,
+  type IconName,
+  type RegisteredIconKey,
+} from "@/registry/icons.registry"
 
-export type { IconDetail, IconKey, IconName, RegisteredIconKey };
-export { ICON_REGISTRY };
+export type { IconDetail, IconKey, IconName, RegisteredIconKey }
+export { ICON_REGISTRY }
 
 export function findIcon(key: IconKey): IconDetail | undefined {
-	return ICON_REGISTRY[key];
+  return ICON_REGISTRY[key]
 }
 
 export function getIcon(key: IconKey): IconDetail {
-	const icon = findIcon(key);
+  const icon = findIcon(key)
 
-	if (!icon) {
-		throw new Error(`Unknown icon: ${key}`);
-	}
+  if (!icon) {
+    throw new Error(`Unknown icon: ${key}`)
+  }
 
-	return icon;
+  return icon
 }
 
 /**
  * Renders a registered custom emoji as a Telegram HTML `<tg-emoji>` tag.
  */
 export function renderIcon(key: IconKey): string {
-	const icon = getIcon(key);
+  const icon = getIcon(key)
 
-	return (
-		`<tg-emoji emoji-id="${escapeHtml(icon.customEmojiId)}">` +
-		`${escapeHtml(icon.fallback)}</tg-emoji>`
-	);
+  return (
+    `<tg-emoji emoji-id="${escapeHtml(icon.customEmojiId)}">` +
+    `${escapeHtml(icon.fallback)}</tg-emoji>`
+  )
 }
 
 /**
@@ -43,34 +43,34 @@ export function renderIcon(key: IconKey): string {
  */
 
 export function iconInlineButton(
-	iconKey: IconKey,
-	text: string,
-	callbackData = "noop",
+  iconKey: IconKey,
+  text: string,
+  callbackData = "noop"
 ): InlineKeyboardButton.CallbackButton {
-	const icon = findIcon(iconKey);
+  const icon = findIcon(iconKey)
 
-	return {
-		text,
-		callback_data: callbackData,
-		...(icon ? { icon_custom_emoji_id: icon.customEmojiId } : {}),
-	};
+  return {
+    text,
+    callback_data: callbackData,
+    ...(icon ? { icon_custom_emoji_id: icon.customEmojiId } : {}),
+  }
 }
 
-export const iconCallbackButton = iconInlineButton; // alias for backward compatibility
+export const iconCallbackButton = iconInlineButton // alias for backward compatibility
 
 /**
  * Builds a Telegram inline URL button with a custom emoji icon.
  */
 export function iconUrlButton(
-	iconKey: IconKey,
-	text: string,
-	url: string,
+  iconKey: IconKey,
+  text: string,
+  url: string
 ): InlineKeyboardButton.UrlButton {
-	const icon = findIcon(iconKey);
+  const icon = findIcon(iconKey)
 
-	return {
-		text,
-		url,
-		...(icon ? { icon_custom_emoji_id: icon.customEmojiId } : {}),
-	};
+  return {
+    text,
+    url,
+    ...(icon ? { icon_custom_emoji_id: icon.customEmojiId } : {}),
+  }
 }

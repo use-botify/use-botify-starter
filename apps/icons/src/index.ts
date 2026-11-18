@@ -1,4 +1,3 @@
-
 import { defaultRegistry } from "@/lib/default-registry"
 
 export {

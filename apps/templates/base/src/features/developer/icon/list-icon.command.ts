@@ -1,65 +1,65 @@
-import type { Context } from "grammy";
+import type { Context } from "grammy"
 
-import type { BotCallbackContext, BotCommandContext } from "@/core";
 import {
-	ICON_REGISTRY,
-	type IconDetail,
-	type IconKey,
-	renderIcon,
-} from "@/lib/icons";
-import { escapeHtml } from "@/utils/escape-html";
+  ICON_REGISTRY,
+  renderIcon,
+  type IconDetail,
+  type IconKey,
+} from "@/lib/icons"
+import { escapeHtml } from "@/utils/escape-html"
+import type { BotCallbackContext, BotCommandContext } from "@/core"
 
-const MAX_PAGE_LENGTH = 3_500;
+const MAX_PAGE_LENGTH = 3_500
 const EMPTY_REGISTRY_TEXT =
-	"Your icon registry is empty. Reply to a message containing custom emoji with /add_icon <icon_name>.";
+  "Your icon registry is empty. Reply to a message containing custom emoji with /add_icon <icon_name>."
 
 export async function developerListIconCommand(
-	ctx: BotCommandContext,
+  ctx: BotCommandContext
 ): Promise<void> {
-	await replySavedIcons(ctx);
+  await replySavedIcons(ctx)
 }
 
 export async function developerListIconCallback(
-	ctx: BotCallbackContext,
+  ctx: BotCallbackContext
 ): Promise<void> {
-	await replySavedIcons(ctx);
+  await replySavedIcons(ctx)
 }
 
 export async function replySavedIcons(
-	ctx: Pick<Context, "reply">,
+  ctx: Pick<Context, "reply">
 ): Promise<void> {
-	const lines = (Object.entries(ICON_REGISTRY) as [IconKey, IconDetail][]).map(
-		([key, icon], index) =>
-			`${index + 1}. ${escapeHtml(key)} ${renderIcon(key)}\nID: ${escapeHtml(icon.customEmojiId)}`,
-	);
+  const lines = (Object.entries(ICON_REGISTRY) as [IconKey, IconDetail][]).map(
+    ([key, icon], index) =>
+      `${index + 1}. ${escapeHtml(key)} ${renderIcon(key)}\nID: ${escapeHtml(icon.customEmojiId)}`
+  )
 
-	const pages: string[] = [];
-	let current = "";
+  const pages: string[] = []
+  let current = ""
 
-	for (const line of lines) {
-		const next = current ? `${current}\n\n${line}` : line;
+  for (const line of lines) {
+    const next = current ? `${current}\n\n${line}` : line
 
-		if (current && next.length > MAX_PAGE_LENGTH) {
-			pages.push(current);
-			current = line;
-		} else {
-			current = next;
-		}
-	}
+    if (current && next.length > MAX_PAGE_LENGTH) {
+      pages.push(current)
+      current = line
+    } else {
+      current = next
+    }
+  }
 
-	if (current) pages.push(current);
+  if (current) pages.push(current)
 
-	if (pages.length === 0) {
-		await ctx.reply(EMPTY_REGISTRY_TEXT);
-		return;
-	}
+  if (pages.length === 0) {
+    await ctx.reply(EMPTY_REGISTRY_TEXT)
+    return
+  }
 
-	const formattedPages = pages.map(
-		(page, index) =>
-			`${index === 0 ? "🎨 Registered Icons" : "🎨 Registered Icons (continued)"}\n\n${page}`,
-	);
+  const formattedPages = pages.map(
+    (page, index) =>
+      `${index === 0 ? "🎨 Registered Icons" : "🎨 Registered Icons (continued)"}\n\n${page}`
+  )
 
-	for (const page of formattedPages) {
-		await ctx.reply(page, { parse_mode: "HTML" });
-	}
+  for (const page of formattedPages) {
+    await ctx.reply(page, { parse_mode: "HTML" })
+  }
 }

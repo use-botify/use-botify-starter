@@ -1,4 +1,3 @@
-
 # @botify/icons
 
 Typed Telegram custom-emoji icons for Botify bots: one registry, one set of helpers.

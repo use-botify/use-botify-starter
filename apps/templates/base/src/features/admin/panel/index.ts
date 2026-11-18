@@ -1,1 +1,1 @@
-export { adminPanelCommand } from "./panel.command";
+export { adminPanelCommand } from "./panel.command"

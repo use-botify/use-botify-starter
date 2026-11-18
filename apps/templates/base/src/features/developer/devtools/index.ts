@@ -1,2 +1,2 @@
-export { developerDevtoolsCallbacks } from "./devtools.callback";
-export { developerDevtoolsCommand } from "./devtools.command";
+export { developerDevtoolsCallbacks } from "./devtools.callback"
+export { developerDevtoolsCommand } from "./devtools.command"
