@@ -1,5 +1,5 @@
 {
-  "name": "@botify/icons",
+  "name": "@use-botify/icons",
   "version": "1.0.0",
   "description": "Typed Telegram custom-emoji icon registry and helpers for Botify bots",
   "type": "module",
