@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Build & Framework Output
+dist/
+build/
+out/
+.next/
+.turbo/
+*.tsbuildinfo
+next-env.d.ts
+
+# Testing & Coverage
+coverage/
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+
+# Generated & Local Workspace Artifacts
+**/src/generated/
+context/
+test/
+repomix-output.*
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor & OS Noise
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json

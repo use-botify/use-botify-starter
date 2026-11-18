@@ -1,3 +1,37 @@
 {
-  "cSpell.words": ["botify", "ianvs", "repomix"]
+  "editor.defaultFormatter": "biomejs.biome",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
+  },
+  "biome.requireConfiguration": true,
+  "js/ts.tsdk.path": "./node_modules/typescript/lib",
+  "js/ts.tsdk.promptToUseWorkspaceVersion": true,
+  "js/ts.preferences.importModuleSpecifier": "non-relative",
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "css.lint.unknownAtRules": "ignore",
+  "search.exclude": {
+    "**/.next": true,
+    "**/.turbo": true,
+    "**/coverage": true,
+    "**/dist": true,
+    "context/**": true,
+    "pnpm-lock.yaml": true,
+    "test/**": true
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "cSpell.words": [
+    "biomejs",
+    "botify",
+    "esbuild",
+    "Lockfiles",
+    "repomix",
+    "tsdown",
+    "vitest"
+  ]
 }

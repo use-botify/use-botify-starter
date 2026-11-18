@@ -1,0 +1,13 @@
+{
+  "recommendations": [
+    "biomejs.biome",
+    "editorconfig.editorconfig",
+    "Prisma.prisma",
+    "bradlc.vscode-tailwindcss",
+    "redhat.vscode-yaml"
+  ],
+  "unwantedRecommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode"
+  ]
+}

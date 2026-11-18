@@ -1,0 +1,24 @@
+{
+  "$schema": "https://repomix.com/schemas/latest/schema.json",
+  "output": {
+    "filePath": "context/full.md",
+    "style": "markdown",
+    "filePathStyle": "target-relative",
+    "fileSummary": true,
+    "directoryStructure": true,
+    "files": true,
+    "removeComments": false,
+    "showLineNumbers": true
+  },
+  "ignore": {
+    "useGitignore": true,
+    "useDotIgnore": true,
+    "useDefaultPatterns": true
+  },
+  "security": {
+    "enableSecurityCheck": true
+  },
+  "tokenCount": {
+    "encoding": "o200k_base"
+  }
+}
