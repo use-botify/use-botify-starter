@@ -1,0 +1,82 @@
+import { defineCallback, defineCommand, defineFeature } from "@/core";
+import { DEVELOPER_ROUTES } from "@/features/developer/developer.route";
+import {
+	developerDevtoolsCallbacks,
+	developerDevtoolsCommand,
+} from "@/features/developer/devtools";
+import {
+	developerDevtoolsGuideCallbacks,
+	developerExecuteCallback,
+	developerGuideCallback,
+} from "@/features/developer/devtools/devtools.callback";
+/**
+ * @import commands and callbacks under this
+ */
+import {
+	developerAddIconCommand,
+	developerListIconCommand,
+	developerRemoveIconCommand,
+} from "@/features/developer/icon";
+import { sharedCloseCallback } from "@/features/shared";
+
+export const developerFeature = defineFeature({
+	name: "developer",
+	access: "developer",
+	commands: [
+		defineCommand({
+			name: "devtools",
+			access: "developer",
+			description: "Developer tools",
+			handler: developerDevtoolsCommand,
+		}),
+		defineCommand({
+			name: "list_icons",
+			access: "developer",
+			description: "List icons saved in the library",
+			handler: developerListIconCommand,
+		}),
+		defineCommand({
+			name: "add_icon",
+			access: "developer",
+			description: "Grab an icon into the library",
+			handler: developerAddIconCommand,
+		}),
+		defineCommand({
+			name: "remove_icon",
+			access: "developer",
+			description: "Remove an icon from the library",
+			handler: developerRemoveIconCommand,
+		}),
+	],
+	callbacks: [
+		defineCallback({
+			route: DEVELOPER_ROUTES.devtools,
+			access: "developer",
+			handler: developerDevtoolsCallbacks,
+		}),
+		defineCallback({
+			route: DEVELOPER_ROUTES.devtools_guide,
+			access: "developer",
+			handler: developerDevtoolsGuideCallbacks,
+		}),
+		defineCallback({
+			route: DEVELOPER_ROUTES.guide,
+			access: "developer",
+			handler: async (ctx, { command_name }) => {
+				await developerGuideCallback(ctx, command_name);
+			},
+		}),
+		defineCallback({
+			route: DEVELOPER_ROUTES.execute,
+			access: "developer",
+			handler: async (ctx, { command_name }) => {
+				await developerExecuteCallback(ctx, command_name);
+			},
+		}),
+		defineCallback({
+			route: DEVELOPER_ROUTES.close,
+			access: "developer",
+			handler: sharedCloseCallback,
+		}),
+	],
+});

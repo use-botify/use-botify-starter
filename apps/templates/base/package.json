@@ -1,0 +1,58 @@
+{
+	"name": "use-botify-starter",
+	"version": "1.0.0",
+	"type": "module",
+	"scripts": {
+		"preinstall": "npx only-allow pnpm",
+		"dev": "tsx watch --exclude \"src/features/**\" src/main.ts --hmr",
+		"start": "tsx src/main.ts",
+		"docs:generate": "repomix",
+		"typecheck": "tsc --noEmit",
+		"biome:lint": "biome lint",
+		"biome:format": "biome format --write",
+		"biome:check": "biome check --write",
+		"db:generate": "prisma generate",
+		"db:migrate": "prisma migrate dev",
+		"db:deploy": "prisma migrate deploy",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"test:coverage": "vitest run --coverage",
+		"script:check:all": "tsx scripts/check-and-fix.ts",
+		"script:clean:modules": "tsx scripts/clean-modules.ts"
+	},
+	"dependencies": {
+		"@grammyjs/auto-retry": "2.0.2",
+		"@grammyjs/runner": "2.0.3",
+		"@prisma/adapter-pg": "7.10.1",
+		"@prisma/client": "7.10.1",
+		"chalk": "6.0.1",
+		"dotenv": "18.0.8",
+		"grammy": "1.46.0",
+		"pg": "8.23.1",
+		"pino": "10.3.1",
+		"prisma": "7.10.1",
+		"tsx": "4.23.15",
+		"zod": "4.6.7"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.5.15",
+		"@types/cross-spawn": "6.0.6",
+		"@types/node": "26.6.5",
+		"@types/pg": "8.23.1",
+		"@vitest/coverage-v8": "4.1.2",
+		"cross-spawn": "7.0.6",
+		"only-allow": "^1.2.2",
+		"repomix": "1.18.1",
+		"typescript": "7.0.2",
+		"vite": "^8.3.5",
+		"vitest": "4.1.2"
+	},
+	"devEngines": {
+		"packageManager": {
+			"name": "pnpm",
+			"version": "12.14.0",
+			"onFail": "download"
+		}
+	},
+	"packageManager": "pnpm@12.14.0"
+}
