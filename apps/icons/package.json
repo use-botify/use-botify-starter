@@ -1,0 +1,35 @@
+{
+  "name": "@botify/icons",
+  "version": "0.1.0",
+  "description": "Typed icon utilities for the Botify Telegram bot ecosystem",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "tsdown --watch",
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm typecheck && pnpm build"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@workspace/tsdown-config": "workspace:*",
+    "@workspace/typescript-config": "workspace:*",
+    "@workspace/utils": "workspace:*",
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
+  }
+}
