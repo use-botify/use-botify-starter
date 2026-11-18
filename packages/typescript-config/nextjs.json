@@ -2,14 +2,8 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "./base.json",
   "compilerOptions": {
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES2024"
-    ],
-    "types": [
-      "node"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ES2024"],
+    "types": ["node"],
     "allowJs": true,
     "jsx": "react-jsx",
     "incremental": true,
