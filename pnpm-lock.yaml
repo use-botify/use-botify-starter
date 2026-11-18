@@ -208,6 +208,9 @@ importers:
       '@workspace/typescript-config':
         specifier: workspace:*
         version: link:packages/typescript-config
+      '@workspace/utils':
+        specifier: workspace:*
+        version: link:packages/utils
       cross-spawn:
         specifier: 7.0.6
         version: 7.0.6

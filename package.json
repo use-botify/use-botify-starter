@@ -21,6 +21,7 @@
     }
   },
   "scripts": {
+    "preinstall": "node scripts/only-pnpm.mjs",
     "dev:cli": "pnpm --filter create-use-botify dev",
     "dev:web": "pnpm --filter web dev",
     "build": "turbo run build",
@@ -32,7 +33,7 @@
     "format": "biome format --write .",
     "script:check:all": "tsx scripts/fix-and-clean.mts",
     "script:clean:modules": "tsx scripts/clean-modules.mts",
-    "script:generate:docs": "repomix"
+    "script:generate:docs": "tsx scripts/generate-context.mts"
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
@@ -40,6 +41,7 @@
     "@types/node": "catalog:",
     "@workspace/logger": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
+    "@workspace/utils": "workspace:*",
     "cross-spawn": "7.0.6",
     "repomix": "1.19.0",
     "tsx": "catalog:",
