@@ -1,5 +1,5 @@
 {
-  "name": "@botify/icons",
+  "name": "@use-botify/icons",
   "version": "0.1.0",
   "description": "Typed Telegram custom emoji icons and helpers for the Botify ecosystem",
   "type": "module",
@@ -30,8 +30,8 @@
     "dev": "tsdown --watch",
     "build": "tsdown",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test tests",
-    "verify:telegram": "tsx scripts/verify-telegram.mts",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "prepublishOnly": "pnpm typecheck && pnpm test && pnpm build"
   },
   "devDependencies": {
@@ -39,8 +39,10 @@
     "@workspace/tsdown-config": "workspace:*",
     "@workspace/typescript-config": "workspace:*",
     "@workspace/utils": "workspace:*",
+    "@workspace/vitest-config": "workspace:*",
     "tsdown": "catalog:",
     "tsx": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

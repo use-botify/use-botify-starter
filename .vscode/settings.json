@@ -31,6 +31,7 @@
     "esbuild",
     "Lockfiles",
     "repomix",
+    "solana",
     "tsdown",
     "vitest"
   ]
