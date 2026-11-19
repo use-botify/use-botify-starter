@@ -2,6 +2,26 @@
   "name": "@use-botify/icons",
   "version": "0.1.0",
   "description": "Typed Telegram custom emoji icons and helpers for the Botify ecosystem",
+  "license": "MIT",
+  "author": "Sahil Kumar",
+  "keywords": [
+    "telegram",
+    "telegram-bot",
+    "custom-emoji",
+    "icons",
+    "grammy",
+    "telegraf",
+    "botify",
+    "typescript"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/use-botify/use-botify-starter.git",
+    "directory": "packages/icons"
+  },
   "type": "module",
   "sideEffects": false,
   "files": [
@@ -41,7 +61,6 @@
     "@workspace/utils": "workspace:*",
     "@workspace/vitest-config": "workspace:*",
     "tsdown": "catalog:",
-    "tsx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   }
