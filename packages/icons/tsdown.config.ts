@@ -1,4 +1,4 @@
-import { createLibraryConfig } from "@workspace/tsdown-config";
+import { createLibraryConfig } from "@workspace/tsdown-config"
 
 export default createLibraryConfig({
   entry: {
@@ -9,4 +9,4 @@ export default createLibraryConfig({
   deps: {
     onlyImport: [],
   },
-});
+})

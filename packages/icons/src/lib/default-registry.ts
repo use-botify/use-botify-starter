@@ -1,3 +1,3 @@
-import { createIconRegistry } from "./create-icon-registry";
+import { createIconRegistry } from "./create-icon-registry"
 
-export const defaultRegistry = createIconRegistry();
+export const defaultRegistry = createIconRegistry()

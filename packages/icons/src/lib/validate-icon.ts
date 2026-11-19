@@ -1,6 +1,6 @@
-import type { IconDetail } from "../types/icon.types";
+import type { IconDetail } from "../types/icon.types"
 
-const CUSTOM_EMOJI_ID = /^\d+$/;
+const CUSTOM_EMOJI_ID = /^\d+$/
 
 /**
  * Type guard for a stored icon entry. Optional capture metadata (`capturedAt`,
@@ -8,14 +8,14 @@ const CUSTOM_EMOJI_ID = /^\d+$/;
  */
 export function isIconDetail(value: unknown): value is IconDetail {
   if (typeof value !== "object" || value === null || Array.isArray(value)) {
-    return false;
+    return false
   }
 
-  const icon = value as Record<string, unknown>;
+  const icon = value as Record<string, unknown>
 
   const hasValidCapturedAt =
     icon.capturedAt === undefined ||
-    (typeof icon.capturedAt === "string" && icon.capturedAt.length > 0);
+    (typeof icon.capturedAt === "string" && icon.capturedAt.length > 0)
 
   return (
     typeof icon.key === "string" &&
@@ -25,7 +25,7 @@ export function isIconDetail(value: unknown): value is IconDetail {
     typeof icon.fallback === "string" &&
     icon.fallback.length > 0 &&
     hasValidCapturedAt
-  );
+  )
 }
 
 /**
@@ -34,17 +34,17 @@ export function isIconDetail(value: unknown): value is IconDetail {
  */
 export function assertIconDetail(
   key: string,
-  value: unknown,
+  value: unknown
 ): asserts value is IconDetail {
   if (!isIconDetail(value)) {
     throw new Error(
-      `Invalid icon "${key}": expected non-empty key, numeric customEmojiId, and non-empty fallback.`,
-    );
+      `Invalid icon "${key}": expected non-empty key, numeric customEmojiId, and non-empty fallback.`
+    )
   }
 
   if (value.key !== key) {
     throw new Error(
-      `Icon "${key}" is stored under the wrong key (its key field is "${value.key}").`,
-    );
+      `Icon "${key}" is stored under the wrong key (its key field is "${value.key}").`
+    )
   }
 }

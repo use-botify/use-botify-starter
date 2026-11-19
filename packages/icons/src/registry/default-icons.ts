@@ -1,13 +1,13 @@
-import type { IconDetail, KeyedIconRecord } from "../types/icon.types";
+import type { IconDetail, KeyedIconRecord } from "../types/icon.types"
 
 /**
  * Preserves literal icon keys while enforcing at compile time that every
  * entry's `key` field matches its property name.
  */
 export function defineIcons<const T extends Record<string, IconDetail>>(
-  icons: KeyedIconRecord<T>,
+  icons: KeyedIconRecord<T>
 ): T {
-  return icons;
+  return icons
 }
 
 export const DEFAULT_ICONS = defineIcons({
@@ -130,6 +130,6 @@ export const DEFAULT_ICONS = defineIcons({
     entity: { offset: 0, length: 1 },
     capturedAt: "2026-10-29T13:59:29.993Z",
   },
-});
+})
 
-export type DefaultIconKey = keyof typeof DEFAULT_ICONS;
+export type DefaultIconKey = keyof typeof DEFAULT_ICONS

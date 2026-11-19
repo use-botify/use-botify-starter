@@ -1,4 +1,4 @@
-export type { DefaultIconKey } from "./registry/default-icons";
+export type { DefaultIconKey } from "./registry/default-icons"
 export type {
   Icon,
   IconCallbackButton,
@@ -8,4 +8,4 @@ export type {
   IconRegistry,
   IconUrlButton,
   KeyedIconRecord,
-} from "./types/icon.types";
+} from "./types/icon.types"

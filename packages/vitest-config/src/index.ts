@@ -1,16 +1,16 @@
-import { resolve } from "node:path";
+import { resolve } from "node:path"
 
 import {
   configDefaults,
   defineConfig,
   mergeConfig,
   type ViteUserConfig,
-} from "vitest/config";
+} from "vitest/config"
 
-const BASE_EXCLUDE = [...configDefaults.exclude, "**/dist/**", "**/.turbo/**"];
+const BASE_EXCLUDE = [...configDefaults.exclude, "**/dist/**", "**/.turbo/**"]
 
 function createBaseConfig(overrides: ViteUserConfig = {}): ViteUserConfig {
-  const rootDir = overrides.root ?? process.cwd();
+  const rootDir = overrides.root ?? process.cwd()
 
   const base: ViteUserConfig = {
     resolve: {
@@ -28,25 +28,25 @@ function createBaseConfig(overrides: ViteUserConfig = {}): ViteUserConfig {
       restoreMocks: true,
       passWithNoTests: false,
     },
-  };
+  }
 
-  return defineConfig(mergeConfig(base, overrides));
+  return defineConfig(mergeConfig(base, overrides))
 }
 
 /**
  * Shared Vitest preset for Node apps, bots, and CLIs.
  */
 export function createNodeTestConfig(
-  overrides: ViteUserConfig = {},
+  overrides: ViteUserConfig = {}
 ): ViteUserConfig {
-  return createBaseConfig(overrides);
+  return createBaseConfig(overrides)
 }
 
 /**
  * Shared Vitest preset for publishable TypeScript libraries (`@use-botify/*`).
  */
 export function createLibraryTestConfig(
-  overrides: ViteUserConfig = {},
+  overrides: ViteUserConfig = {}
 ): ViteUserConfig {
   return createBaseConfig(
     mergeConfig(
@@ -59,9 +59,9 @@ export function createLibraryTestConfig(
           },
         },
       } satisfies ViteUserConfig,
-      overrides,
-    ),
-  );
+      overrides
+    )
+  )
 }
 
-export { configDefaults, defineConfig, mergeConfig, type ViteUserConfig };
+export { configDefaults, defineConfig, mergeConfig, type ViteUserConfig }
