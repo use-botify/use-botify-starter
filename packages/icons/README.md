@@ -36,12 +36,12 @@ npm install @use-botify/icons
 Every named icon precomputes its `<tg-emoji>` HTML tag and implements `toString()`, so it renders directly inside template literals:
 
 ```ts
-import { chatIcon, shieldIcon } from "@use-botify/icons";
+import { chatIcon, shieldIcon } from "@use-botify/icons"
 
 await ctx.reply(
   `${chatIcon} <b>Welcome!</b>\n${shieldIcon} Your session is protected.`,
-  { parse_mode: "HTML" },
-);
+  { parse_mode: "HTML" }
+)
 ```
 
 ### Inline Keyboard Buttons
@@ -49,8 +49,8 @@ await ctx.reply(
 Use the helpers from `@use-botify/icons/utils`, or pass `.customEmojiId` directly:
 
 ```ts
-import { buyIcon, settingsIcon } from "@use-botify/icons";
-import { iconCallbackButton, iconUrlButton } from "@use-botify/icons/utils";
+import { buyIcon, settingsIcon } from "@use-botify/icons"
+import { iconCallbackButton, iconUrlButton } from "@use-botify/icons/utils"
 
 const keyboard = {
   inline_keyboard: [
@@ -62,11 +62,11 @@ const keyboard = {
       iconUrlButton(
         buyIcon,
         "Open Store",
-        "[https://example.com](https://example.com)",
+        "[https://example.com](https://example.com)"
       ),
     ],
   ],
-};
+}
 ```
 
 ### Dynamic Lookups
@@ -74,10 +74,10 @@ const keyboard = {
 Use `findIcon` for untrusted or dynamic keys—if it returns `undefined`, button builders omit `icon_custom_emoji_id` automatically:
 
 ```ts
-import { findIcon, iconCallbackButton } from "@use-botify/icons/utils";
+import { findIcon, iconCallbackButton } from "@use-botify/icons/utils"
 
-const icon = findIcon(userProvidedKey); // Icon | undefined
-const button = iconCallbackButton(icon, "Continue", "next_step");
+const icon = findIcon(userProvidedKey) // Icon | undefined
+const button = iconCallbackButton(icon, "Continue", "next_step")
 ```
 
 ### Custom Icon Registries
@@ -85,7 +85,7 @@ const button = iconCallbackButton(icon, "Continue", "next_step");
 Extend or override `DEFAULT_ICONS` with your own Telegram custom emoji IDs while keeping strict autocomplete and compile-time key checks:
 
 ```ts
-import { createIconRegistry } from "@use-botify/icons/utils";
+import { createIconRegistry } from "@use-botify/icons/utils"
 
 export const botIcons = createIconRegistry({
   swap: {
@@ -93,10 +93,10 @@ export const botIcons = createIconRegistry({
     customEmojiId: "999000111222333444",
     fallback: "🔁",
   },
-});
+})
 
-const text = `${botIcons.icons.swap} Swap complete`;
-const btn = botIcons.iconCallbackButton("swap", "Swap Again", "swap:retry");
+const text = `${botIcons.icons.swap} Swap complete`
+const btn = botIcons.iconCallbackButton("swap", "Swap Again", "swap:retry")
 ```
 
 ## Built-in Icons
@@ -109,14 +109,14 @@ const btn = botIcons.iconCallbackButton("swap", "Swap Again", "swap:retry");
 | `buy`      | `buyIcon`      |    🛒    | `5431461452642806959` |
 | `chat`     | `chatIcon`     |    💬    | `5443038326535759644` |
 | `close`    | `closeIcon`    |    ❌    | `5210952531676504517` |
-| `delete`   | `deleteIcon`   |    🗑    | `5445267414562389170` |
+| `delete`   | `deleteIcon`   |    🗑     | `5445267414562389170` |
 | `diamond`  | `diamondIcon`  |    💎    | `5431761159755688084` |
 | `ethereum` | `ethereumIcon` |    💎    | `5371015538912835062` |
 | `flash`    | `flashIcon`    |    ☄️    | `5224607267797606837` |
 | `pencil`   | `pencilIcon`   |    ✏️    | `5395444784611480792` |
 | `saved`    | `savedIcon`    |    🔖    | `5222444124698853913` |
 | `settings` | `settingsIcon` |    ⚙️    | `5341715473882955310` |
-| `shield`   | `shieldIcon`   |    🛡    | `5251203410396458957` |
+| `shield`   | `shieldIcon`   |    🛡     | `5251203410396458957` |
 | `solana`   | `solanaIcon`   |    💜    | `5370932637454084263` |
 | `ton`      | `tonIcon`      |    💎    | `5305758346983286417` |
 | `usdt`     | `usdtIcon`     |    🟠    | `5370638969065221371` |

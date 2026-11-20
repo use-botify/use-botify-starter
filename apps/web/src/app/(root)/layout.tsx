@@ -1,9 +1,9 @@
-import ReactLenis from "lenis/react";
+import ReactLenis from "lenis/react"
 
-import { Background } from "@/components/background";
-import { MaxWidthWrapper } from "@/components/max-width-wrapper";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
+import { Background } from "@/components/background"
+import { MaxWidthWrapper } from "@/components/max-width-wrapper"
+import { SiteFooter } from "@/components/site-footer"
+import { SiteHeader } from "@/components/site-header"
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -15,5 +15,5 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <SiteFooter />
       </MaxWidthWrapper>
     </ReactLenis>
-  );
+  )
 }

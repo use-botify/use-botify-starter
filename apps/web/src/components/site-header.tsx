@@ -1,6 +1,6 @@
-import Link from "next/link";
+import Link from "next/link"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 
 export function SiteHeader() {
   return (
@@ -51,5 +51,5 @@ export function SiteHeader() {
         </Button>
       </Link>
     </header>
-  );
+  )
 }

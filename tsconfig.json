@@ -1,6 +1,9 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "@workspace/typescript-config/node.json",
+  "compilerOptions": {
+    "customConditions": ["source"]
+  },
   "include": ["scripts"],
   "exclude": ["node_modules"]
 }

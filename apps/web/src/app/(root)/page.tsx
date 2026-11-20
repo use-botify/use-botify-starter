@@ -1,12 +1,12 @@
-import { Suspense } from "react";
+import { Suspense } from "react"
 
-import { CommandPill } from "@/components/command-pill";
-import { formatDownloadCount, getTotalMonthlyDownloads } from "@/lib/npm";
+import { CommandPill } from "@/components/command-pill"
+import { formatDownloadCount, getTotalMonthlyDownloads } from "@/lib/npm"
 
-const TRACKED_PACKAGES = ["@use-botify/icons", "create-use-botify"] as const;
+const TRACKED_PACKAGES = ["@use-botify/icons", "create-use-botify"] as const
 
 async function DownloadsBadge() {
-  const downloads = await getTotalMonthlyDownloads(TRACKED_PACKAGES);
+  const downloads = await getTotalMonthlyDownloads(TRACKED_PACKAGES)
 
   return (
     <span className="mb-4 inline-flex items-center justify-center rounded-2xl border bg-foreground/10 px-3.5 py-1.5 font-mono text-sm text-muted-foreground">
@@ -14,7 +14,7 @@ async function DownloadsBadge() {
         ? `${formatDownloadCount(downloads)} downloads last month`
         : "Open-source Telegram bot toolkit"}
     </span>
-  );
+  )
 }
 
 function DownloadsBadgeFallback() {
@@ -23,7 +23,7 @@ function DownloadsBadgeFallback() {
       aria-hidden="true"
       className="mb-4 inline-flex h-8.5 w-52 animate-pulse rounded-2xl border bg-foreground/10"
     />
-  );
+  )
 }
 
 export default function Home() {
@@ -61,5 +61,5 @@ export default function Home() {
         </p>
       </div>
     </section>
-  );
+  )
 }

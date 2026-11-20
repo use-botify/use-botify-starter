@@ -31,7 +31,7 @@
     "check:fix": "biome check --write .",
     "lint": "biome lint .",
     "format": "biome format --write .",
-    "script:check:all": "tsx scripts/fix-and-clean.mts",
+    "script:check:all": "tsx --conditions=source scripts/fix-and-clean.mts",
     "script:clean:modules": "tsx scripts/clean-modules.mts",
     "script:generate:docs": "tsx scripts/generate-context.mts"
   },

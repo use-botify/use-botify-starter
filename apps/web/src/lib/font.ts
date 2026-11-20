@@ -1,4 +1,4 @@
-import localFont from "next/font/local";
+import localFont from "next/font/local"
 
 const mono = localFont({
   src: [
@@ -12,7 +12,7 @@ const mono = localFont({
     },
   ],
   variable: "--font-mono",
-});
+})
 
 const inter = localFont({
   src: [
@@ -22,6 +22,6 @@ const inter = localFont({
   ],
   variable: "--font-inter",
   display: "swap",
-});
+})
 
-export { inter, mono };
+export { inter, mono }

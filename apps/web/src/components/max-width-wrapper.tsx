@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
 export function MaxWidthWrapper({
   children,
@@ -8,5 +8,5 @@ export function MaxWidthWrapper({
     <main className={cn("max-w-screen-2xl mx-auto relative", className)}>
       {children}
     </main>
-  );
+  )
 }
