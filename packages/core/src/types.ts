@@ -1,12 +1,17 @@
 export type {
   BotConfigInput,
+  BotifyApp,
+  BotStatus,
   CoreErrorCode,
   CoreLogger,
   LogLevel,
   LogMeta,
   ResolvedBotConfig,
   ResolvedShutdownOptions,
+  SetupGracefulShutdownParams,
+  ShutdownController,
   ShutdownHook,
   ShutdownOptions,
+  StartBotOptions,
   TokenVerificationResult,
-} from "./types/core.types"
+} from "./types/core.types";
