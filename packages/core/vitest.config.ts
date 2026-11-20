@@ -1,3 +1,3 @@
-import { createLibraryTestConfig } from "@workspace/vitest-config";
+import { createLibraryTestConfig } from "@workspace/vitest-config"
 
-export default createLibraryTestConfig();
+export default createLibraryTestConfig()

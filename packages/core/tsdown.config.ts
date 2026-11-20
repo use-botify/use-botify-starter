@@ -1,4 +1,4 @@
-import { createLibraryConfig } from "@workspace/tsdown-config";
+import { createLibraryConfig } from "@workspace/tsdown-config"
 
 export default createLibraryConfig({
   platform: "node",
@@ -7,4 +7,4 @@ export default createLibraryConfig({
     middleware: "src/middleware.ts",
     types: "src/types.ts",
   },
-});
+})
