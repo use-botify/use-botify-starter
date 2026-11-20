@@ -14,7 +14,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={cn(
-        "font-inter antialiased tracking-wide font-normal leading-normal",
+        "font-inter antialiased tracking-wide font-normal leading-normal dark",
         mono.variable,
         inter.variable,
       )}
