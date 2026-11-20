@@ -14,4 +14,15 @@ export type {
   ShutdownOptions,
   StartBotOptions,
   TokenVerificationResult,
-} from "./types/core.types";
+} from "./types/core.types"
+export type {
+  AutoAnswerCallbackOptions,
+  CoreErrorHandler,
+  ErrorHandlerMeta,
+  ErrorHandlerOptions,
+  HmrDispatcher,
+  HmrDispatcherOptions,
+  RateLimiterMiddleware,
+  RateLimiterOptions,
+  RateLimitInfo,
+} from "./types/middleware.types"
