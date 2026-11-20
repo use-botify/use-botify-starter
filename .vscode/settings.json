@@ -33,6 +33,7 @@
     "repomix",
     "solana",
     "tsdown",
+    "turbopack",
     "vitest"
   ]
 }
