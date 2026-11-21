@@ -1,4 +1,20 @@
 export type {
+  CreateIconToolsPluginOptions,
+  ExtractedCustomEmoji,
+  ExtractedEmojiSource,
+  IconEntityPosition,
+  IconSourceMessage,
+  IconStickerDetail,
+  IconStickerFormat,
+  IconToolCommandDefinition,
+  IconToolCommandDescriptions,
+  IconToolCommandNames,
+  IconToolEntry,
+  IconToolsPlugin,
+  IconToolsStore,
+  InspectableEmojiMessage,
+} from "./types/icon-tools.types"
+export type {
   CreateImagePluginOptions,
   ImageFormat,
   ImageKey,
