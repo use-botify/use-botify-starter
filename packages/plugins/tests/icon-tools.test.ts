@@ -1,6 +1,6 @@
-import { Bot } from "grammy";
-import type { Update, UserFromGetMe } from "grammy/types";
-import { describe, expect, it, vi } from "vitest";
+import { Bot } from "grammy"
+import type { Update, UserFromGetMe } from "grammy/types"
+import { describe, expect, it, vi } from "vitest"
 
 import {
   createIconToolsPlugin,
@@ -8,11 +8,11 @@ import {
   normalizeIconKey,
   renderCustomEmojiTag,
   resolveCandidateKey,
-} from "../src/icon-tools";
-import { BotifyPluginError } from "../src/index";
-import type { IconToolEntry, IconToolsStore } from "../src/types";
+} from "../src/icon-tools"
+import { BotifyPluginError } from "../src/index"
+import type { IconToolEntry, IconToolsStore } from "../src/types"
 
-const VALID_TOKEN = "123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi";
+const VALID_TOKEN = "123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi"
 
 const MOCK_BOT_INFO: UserFromGetMe = {
   id: 123456789,
@@ -28,36 +28,36 @@ const MOCK_BOT_INFO: UserFromGetMe = {
   allows_users_to_create_topics: false,
   can_manage_bots: false,
   supports_join_request_queries: false,
-};
+}
 
 function createMemoryStore(persistImpl: () => unknown = () => undefined) {
-  const map = new Map<string, IconToolEntry>();
-  const persist = vi.fn(persistImpl);
+  const map = new Map<string, IconToolEntry>()
+  const persist = vi.fn(persistImpl)
 
   const store: IconToolsStore = {
     get size() {
-      return map.size;
+      return map.size
     },
     getAll: () => Object.fromEntries(map.entries()),
     get: (key) => map.get(key),
     has: (key) => map.has(key),
     set: (key, entry) => {
-      map.set(key, entry);
-      return entry;
+      map.set(key, entry)
+      return entry
     },
     remove: (key) => map.delete(key),
     persist,
-  };
+  }
 
-  return { store, persist };
+  return { store, persist }
 }
 
 function createTestBot() {
-  const apiCalls: { method: string; payload: Record<string, unknown> }[] = [];
-  const bot = new Bot(VALID_TOKEN, { botInfo: MOCK_BOT_INFO });
+  const apiCalls: { method: string; payload: Record<string, unknown> }[] = []
+  const bot = new Bot(VALID_TOKEN, { botInfo: MOCK_BOT_INFO })
 
   bot.api.config.use((_prev, method, payload) => {
-    apiCalls.push({ method, payload: payload as Record<string, unknown> });
+    apiCalls.push({ method, payload: payload as Record<string, unknown> })
 
     if (method === "getCustomEmojiStickers") {
       return Promise.resolve({
@@ -76,26 +76,26 @@ function createTestBot() {
             custom_emoji_id: "5443038326535759644",
           },
         ],
-      } as never);
+      } as never)
     }
 
-    return Promise.resolve({ ok: true, result: true } as never);
-  });
+    return Promise.resolve({ ok: true, result: true } as never)
+  })
 
-  return { bot, apiCalls };
+  return { bot, apiCalls }
 }
 
 describe("emoji extraction helpers", () => {
   it("normalizes keys, resolves candidate names, and renders escaped HTML tags", () => {
-    expect(normalizeIconKey("  Boost-Rocket! ")).toBe("boost_rocket");
+    expect(normalizeIconKey("  Boost-Rocket! ")).toBe("boost_rocket")
     expect(resolveCandidateKey("5443038326535759644", "My Icon")).toBe(
-      "my_icon",
-    );
-    expect(resolveCandidateKey("5443038326535759644")).toBe("icon_759644");
+      "my_icon"
+    )
+    expect(resolveCandidateKey("5443038326535759644")).toBe("icon_759644")
     expect(renderCustomEmojiTag("5443038326535759644", "<🔥>")).toBe(
-      '<tg-emoji emoji-id="5443038326535759644">&lt;🔥&gt;</tg-emoji>',
-    );
-  });
+      '<tg-emoji emoji-id="5443038326535759644">&lt;🔥&gt;</tg-emoji>'
+    )
+  })
 
   it("extracts custom emoji from text entities and captions", () => {
     const extracted = extractCustomEmoji({
@@ -111,35 +111,35 @@ describe("emoji extraction helpers", () => {
           custom_emoji_id: "5443038326535759644",
         },
       ],
-    });
+    })
 
-    expect(extracted?.customEmojiId).toBe("5443038326535759644");
-    expect(extracted?.fallback).toBe("🚀");
-    expect(extracted?.source).toBe("text");
-  });
-});
+    expect(extracted?.customEmojiId).toBe("5443038326535759644")
+    expect(extracted?.fallback).toBe("🚀")
+    expect(extracted?.source).toBe("text")
+  })
+})
 
 describe("createIconToolsPlugin", () => {
   it("handles /add_icon, /list_icons, and /remove_icon end-to-end", async () => {
-    const { store, persist } = createMemoryStore();
-    const onIconSaved = vi.fn();
-    const onIconRemoved = vi.fn();
+    const { store, persist } = createMemoryStore()
+    const onIconSaved = vi.fn()
+    const onIconRemoved = vi.fn()
 
     const plugin = createIconToolsPlugin({
       store,
       onIconSaved,
       onIconRemoved,
       logger: false,
-    });
+    })
 
     expect(plugin.commands.map((cmd) => cmd.name)).toEqual([
       "add_icon",
       "list_icons",
       "remove_icon",
-    ]);
+    ])
 
-    const { bot, apiCalls } = createTestBot();
-    bot.use(plugin.middleware);
+    const { bot, apiCalls } = createTestBot()
+    bot.use(plugin.middleware)
 
     // 1. Add an icon inline
     const addUpdate: Update = {
@@ -160,14 +160,14 @@ describe("createIconToolsPlugin", () => {
           },
         ],
       },
-    };
+    }
 
-    await bot.handleUpdate(addUpdate);
+    await bot.handleUpdate(addUpdate)
 
-    expect(store.get("boost")?.customEmojiId).toBe("5443038326535759644");
-    expect(store.get("boost")?.sticker?.setName).toBe("BotifyPack");
-    expect(onIconSaved).toHaveBeenCalledTimes(1);
-    expect(persist).toHaveBeenCalledTimes(1);
+    expect(store.get("boost")?.customEmojiId).toBe("5443038326535759644")
+    expect(store.get("boost")?.sticker?.setName).toBe("BotifyPack")
+    expect(onIconSaved).toHaveBeenCalledTimes(1)
+    expect(persist).toHaveBeenCalledTimes(1)
 
     // 2. List icons
     const listUpdate: Update = {
@@ -180,9 +180,9 @@ describe("createIconToolsPlugin", () => {
         text: "/list_icons",
         entities: [{ offset: 0, length: 11, type: "bot_command" }],
       },
-    };
+    }
 
-    await bot.handleUpdate(listUpdate);
+    await bot.handleUpdate(listUpdate)
 
     expect(apiCalls).toContainEqual(
       expect.objectContaining({
@@ -190,8 +190,8 @@ describe("createIconToolsPlugin", () => {
         payload: expect.objectContaining({
           text: expect.stringContaining("Registered Icons (1)"),
         }),
-      }),
-    );
+      })
+    )
 
     // 3. Remove icon
     const removeUpdate: Update = {
@@ -204,29 +204,29 @@ describe("createIconToolsPlugin", () => {
         text: "/remove_icon boost",
         entities: [{ offset: 0, length: 12, type: "bot_command" }],
       },
-    };
+    }
 
-    await bot.handleUpdate(removeUpdate);
+    await bot.handleUpdate(removeUpdate)
 
-    expect(store.size).toBe(0);
-    expect(onIconRemoved).toHaveBeenCalledTimes(1);
-    expect(persist).toHaveBeenCalledTimes(2);
-  });
+    expect(store.size).toBe(0)
+    expect(onIconRemoved).toHaveBeenCalledTimes(1)
+    expect(persist).toHaveBeenCalledTimes(2)
+  })
 
   it("rolls back removal if store.persist() throws and rejects invalid command configs", async () => {
     const { store } = createMemoryStore(() => {
-      throw new Error("disk full");
-    });
+      throw new Error("disk full")
+    })
 
     store.set("spark", {
       key: "spark",
       customEmojiId: "1234567890",
       fallback: "✨",
-    });
+    })
 
-    const plugin = createIconToolsPlugin({ store, logger: false });
-    const { bot } = createTestBot();
-    bot.use(plugin.middleware);
+    const plugin = createIconToolsPlugin({ store, logger: false })
+    const { bot } = createTestBot()
+    bot.use(plugin.middleware)
 
     const removeUpdate: Update = {
       update_id: 1,
@@ -238,16 +238,16 @@ describe("createIconToolsPlugin", () => {
         text: "/remove_icon spark",
         entities: [{ offset: 0, length: 12, type: "bot_command" }],
       },
-    };
+    }
 
-    await bot.handleUpdate(removeUpdate);
-    expect(store.has("spark")).toBe(true);
+    await bot.handleUpdate(removeUpdate)
+    expect(store.has("spark")).toBe(true)
 
     expect(() =>
       createIconToolsPlugin({
         store,
         commandNames: { add: "same", list: "same" },
-      }),
-    ).toThrow(BotifyPluginError);
-  });
-});
+      })
+    ).toThrow(BotifyPluginError)
+  })
+})
