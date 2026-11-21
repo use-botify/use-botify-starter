@@ -77,12 +77,12 @@ export interface CreateRouterOptions<
    * Tier treated as open access when no guard is provided for it.
    * Defaults to `tierOrder[0]` (`"public"`).
    */
-  readonly publicTier?: TAccess
+  readonly publicTier?: NoInfer<TAccess>
   /**
    * Access guard predicates keyed by tier. Every non-public tier referenced
    * by a feature must define a guard or `createRouter` will throw.
    */
-  readonly guards?: Partial<Record<TAccess, AccessGuard<C>>>
+  readonly guards?: Partial<Record<NoInfer<TAccess>, AccessGuard<C>>>
   /** Enforce `<feature.name>:` prefix on callback patterns. Defaults to `true`. */
   readonly requireFeaturePrefix?: boolean
   /** Override Telegram's maximum commands per menu (default `100`). */

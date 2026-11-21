@@ -10,6 +10,20 @@ export type {
   ValidationProblemKind,
 } from "./types/feature.types"
 export type {
+  CallbackFileConfig,
+  CallbackHandler,
+  CommandFileConfig,
+  CommandHandler,
+  CreateFsRouterOptions,
+  DiscoveredRouteFile,
+  DiscoveredRouteKind,
+  DiscoverRoutesOptions,
+  FeatureFileConfig,
+  FsBotifyRouter,
+  LoadFeaturesOptions,
+  ModuleLoader,
+} from "./types/fs.types"
+export type {
   CallbackBuildArgs,
   CallbackParamInput,
   CallbackParams,
