@@ -179,6 +179,9 @@ catalogs:
     '@types/node':
       specifier: 26.6.5
       version: 26.6.5
+    grammy:
+      specifier: 1.46.0
+      version: 1.46.0
     tsdown:
       specifier: 0.23.7
       version: 0.23.7
@@ -369,6 +372,36 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
+
+  packages/router:
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.6.5
+      '@workspace/tsdown-config':
+        specifier: workspace:*
+        version: link:../tsdown-config
+      '@workspace/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@workspace/utils':
+        specifier: workspace:*
+        version: link:../utils
+      '@workspace/vitest-config':
+        specifier: workspace:*
+        version: link:../vitest-config
+      grammy:
+        specifier: 'catalog:'
+        version: 1.46.0
+      tsdown:
+        specifier: 'catalog:'
+        version: 0.23.7(tsx@4.23.15)(typescript@7.0.2)
+      typescript:
+        specifier: 'catalog:'
+        version: 7.0.2
+      vitest:
+        specifier: 'catalog:'
+        version: 5.1.1(@types/node@26.6.5)(vite@8.3.8(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15))
 
   packages/tsdown-config:
     dependencies:
