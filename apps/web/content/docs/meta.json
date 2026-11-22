@@ -1,0 +1,13 @@
+{
+  "title": "Documentation",
+  "pages": [
+    "---Getting Started---",
+    "index",
+    "quick-start",
+    "cli-flags",
+    "---Guides---",
+    "guides",
+    "---Packages---",
+    "packages"
+  ]
+}

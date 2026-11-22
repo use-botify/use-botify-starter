@@ -1,0 +1,41 @@
+---
+title: "@use-botify/router"
+description: File-based features/ router with (tier) route groups, dynamic [param] callbacks, and menu sync.
+---
+
+`@use-botify/router` lets you register features either declaratively via `defineFeature` or automatically from disk with `createFsRouter`.
+
+## Installation
+
+```bash title="Terminal"
+pnpm add @use-botify/router grammy
+```
+
+## Entrypoints
+
+| Import Path                | Purpose                                                      |
+| :------------------------- | :----------------------------------------------------------- |
+| `@use-botify/router`       | Programmatic `createRouter` and `defineFeature` builders     |
+| `@use-botify/router/fs`    | `createFsRouter` filesystem scanner & dynamic module loader  |
+| `@use-botify/router/types` | Feature, command, callback, and router TypeScript interfaces |
+
+## Filesystem Mounting
+
+```ts title="src/main.ts"
+import path from "node:path";
+
+import { createBot } from "@use-botify/core";
+import { createFsRouter } from "@use-botify/router/fs";
+
+const app = createBot({ token: process.env.BOT_TOKEN! });
+
+const router = await createFsRouter({
+  featuresDir: path.resolve(import.meta.dirname, "features"),
+  logger: app.logger,
+});
+
+app.use(router.composer);
+await app.start();
+```
+
+Read the [File-Based Routing](/docs/guides/file-based-routing) guide for folder conventions and route groups.

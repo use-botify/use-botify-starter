@@ -1,0 +1,29 @@
+---
+title: create-use-botify
+description: Interactive CLI scaffolder and programmatic template engine for Use Botify Telegram bots.
+---
+
+`create-use-botify` generates a ready-to-run TypeScript + grammY project pre-configured with Biome, Zod environment validation, file-based routing, and Vite HMR.
+
+## Run with Your Package Manager
+
+```bash title="Terminal"
+pnpm create use-botify
+```
+
+```bash title="Terminal"
+npx create-use-botify@latest
+```
+
+```bash title="Terminal"
+bun create use-botify
+```
+
+## Entrypoints
+
+| Import Path               | Exports                                                                                                                   |
+| :------------------------ | :------------------------------------------------------------------------------------------------------------------------ |
+| `create-use-botify`       | `scaffoldProject`, `renderProjectFiles`, `resolveScaffoldOptions`, `parseCliArgs`, `CreateBotifyError`, `BOTIFY_VERSIONS` |
+| `create-use-botify/types` | `ScaffoldOptions`, `ScaffoldResult`, `GeneratedFile`, `FeatureSelection`, `PackageManager`                                |
+
+See [CLI Flags & Options](/docs/cli-flags) for all supported flags and programmatic scaffolding recipes.

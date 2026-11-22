@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 import { PackageInstallButton } from "@/components/package-install-button"
 import {
   BOTIFY_PACKAGES,
@@ -90,22 +92,30 @@ export function EcosystemGrid({ byPackage }: EcosystemGridProps) {
               />
 
               <div className="flex items-center justify-between font-mono text-xs text-muted-foreground">
-                <a
-                  href={pkg.npmUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="transition-colors hover:text-foreground"
+                <Link
+                  href={pkg.docsUrl}
+                  className="text-foreground transition-colors hover:text-green-400"
                 >
-                  npm ↗
-                </a>
-                <a
-                  href={pkg.githubUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="transition-colors hover:text-foreground"
-                >
-                  source ↗
-                </a>
+                  docs →
+                </Link>
+                <div className="flex items-center gap-3">
+                  <a
+                    href={pkg.npmUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="transition-colors hover:text-foreground"
+                  >
+                    npm ↗
+                  </a>
+                  <a
+                    href={pkg.githubUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="transition-colors hover:text-foreground"
+                  >
+                    source ↗
+                  </a>
+                </div>
               </div>
             </div>
           </article>

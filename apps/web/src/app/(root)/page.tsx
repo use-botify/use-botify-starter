@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { cache, Suspense } from "react"
 
 import { CommandPill } from "@/components/command-pill"
@@ -80,7 +81,6 @@ export default function Home() {
           </p>
 
           <CommandPill />
-
           <p className="mt-5 font-mono text-xs text-muted-foreground">
             {BOTIFY_PACKAGES.length} packages live on npm →{" "}
             <a
@@ -89,6 +89,15 @@ export default function Home() {
             >
               explore ecosystem
             </a>
+            <span aria-hidden="true" className="mx-2 text-border">
+              ·
+            </span>
+            <Link
+              href="/docs"
+              className="text-foreground underline decoration-muted-foreground/50 underline-offset-4 transition-colors hover:decoration-foreground"
+            >
+              read the docs
+            </Link>
           </p>
         </div>
       </section>

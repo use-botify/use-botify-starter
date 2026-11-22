@@ -1,0 +1,100 @@
+---
+title: File-Based Routing
+description: Organize Telegram commands and inline keyboard callbacks using Next.js-style folders inside features/.
+---
+
+`@use-botify/router/fs` scans your `features/` directory and maps folders and files directly onto grammY command and callback query handlers.
+
+## Directory Conventions
+
+| File Path | Registered Handler |
+| :--- | :--- |
+| `features/start/command.ts` | `/start` command |
+| `features/start/ping.callback.ts` | Callback query `"start:ping"` |
+| `features/(admin)/panel/command.ts` | `/panel` command (group `(admin)` is omitted from route name) |
+| `features/(admin)/panel/close.callback.ts` | Callback query `"panel:close"` |
+| `features/orders/[id].callback.ts` | Dynamic callback matching `"orders:<id>"` |
+
+Parenthesized directories like `(admin)` and `(developer)` act as **route groups**—they keep access tiers and related features organized on disk without prefixing the Telegram command or callback key.
+
+## Writing a Command (`command.ts`)
+
+Export an optional `description` (used for Telegram's `/` menu sync) and a `default` async handler:
+
+```ts title="src/features/start/command.ts"
+import { type CommandContext, type Context, InlineKeyboard } from "grammy"
+
+export const description = "Start the bot"
+
+export default async function startCommand(
+  ctx: CommandContext<Context>
+): Promise<void> {
+  const keyboard = new InlineKeyboard().text("Check Status", "start:ping")
+
+  await ctx.reply(
+    "<b>Welcome!</b> Your Botify Telegram bot is up and running.",
+    {
+      parse_mode: "HTML",
+      reply_markup: keyboard,
+    }
+  )
+}
+```
+
+## Writing a Callback (`*.callback.ts`)
+
+Any file ending in `.callback.ts` registers a callback query handler scoped to `<feature>:<name>`:
+
+```ts title="src/features/start/ping.callback.ts"
+import process from "node:process"
+
+import type { CallbackQueryContext, Context } from "grammy"
+
+export default async function startPingCallback(
+  ctx: CallbackQueryContext<Context>
+): Promise<void> {
+  await ctx.answerCallbackQuery({ text: "Bot is online!" })
+  const uptime = Math.floor(process.uptime())
+  await ctx.editMessageText(
+    `<b>Status:</b> Online\n<b>Uptime:</b> ${uptime}s`,
+    { parse_mode: "HTML" }
+  )
+}
+```
+
+## Guarding Role-Based Tiers
+
+Scaffolded projects include `src/lib/access.ts` backed by `ADMIN_IDS` and `DEVELOPER_IDS` from `.env`:
+
+```ts title="src/features/(admin)/panel/command.ts"
+import { buildPanelGreeting } from "@use-botify/plugins/panels"
+import { type CommandContext, type Context, InlineKeyboard } from "grammy"
+
+import { isAdmin } from "@/lib/access"
+
+export const description = "Open the admin panel"
+
+export default async function adminPanelCommand(
+  ctx: CommandContext<Context>
+): Promise<void> {
+  if (!isAdmin(ctx.from?.id)) {
+    await ctx.reply("You do not have permission to access this panel.")
+    return
+  }
+
+  const text = buildPanelGreeting({
+    role: "admin",
+    user: ctx.from,
+    description: "Manage your bot settings and moderation actions below.",
+  })
+
+  await ctx.reply(text, {
+    parse_mode: "HTML",
+    reply_markup: new InlineKeyboard().text("Close", "panel:close"),
+  })
+}
+```
+
+## Generated Route Types
+
+In development, `@use-botify/tooling/codegen` writes `src/generated/routes.d.ts` every time a feature file is added, renamed, or removed so you get autocomplete for every valid command and callback string across your codebase.

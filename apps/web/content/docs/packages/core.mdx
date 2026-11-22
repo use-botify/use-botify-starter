@@ -1,0 +1,37 @@
+---
+title: "@use-botify/core"
+description: Bot runtime, structured logger, graceful shutdown lifecycle, and HMR middleware dispatcher.
+---
+
+`@use-botify/core` wraps grammY's `Bot` with fail-fast token validation, structured logging, clean `SIGINT`/`SIGTERM` shutdown hooks, and an atomic middleware proxy for live feature reloading.
+
+## Installation
+
+```bash title="Terminal"
+pnpm add @use-botify/core grammy
+```
+
+## Entrypoints
+
+| Import Path                   | Purpose                                                |
+| :---------------------------- | :----------------------------------------------------- |
+| `@use-botify/core`            | `createBot`, structured logger, and core error classes |
+| `@use-botify/core/middleware` | `createHmrDispatcher` and built-in runtime middleware  |
+| `@use-botify/core/types`      | `CoreLogger`, bot options, and lifecycle types         |
+
+## Basic Usage
+
+```ts title="src/main.ts"
+import { createBot } from "@use-botify/core";
+import { createHmrDispatcher } from "@use-botify/core/middleware";
+
+const app = createBot({ token: process.env.BOT_TOKEN! });
+const hmr = createHmrDispatcher({ logger: app.logger });
+
+app.use(hmr.middleware);
+app.onShutdown(async () => {
+  app.logger.info("App", "Closing external resources");
+});
+
+await app.start();
+```

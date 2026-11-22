@@ -1,0 +1,60 @@
+---
+title: "@use-botify/plugins"
+description: Optional runtime plugins for magic-byte image caching, HTML UI panels, and custom emoji management.
+---
+
+`@use-botify/plugins` ships three self-contained runtime modules that plug cleanly into any grammY bot.
+
+## Installation
+
+```bash title="Terminal"
+pnpm add @use-botify/plugins grammy
+```
+
+## Entrypoints
+
+| Import Path                      | Purpose                                                                                   |
+| :------------------------------- | :---------------------------------------------------------------------------------------- |
+| `@use-botify/plugins`            | Convenience barrel + `BotifyPluginError`                                                  |
+| `@use-botify/plugins/images`     | `createImagePlugin`, `detectImageFormat`, `validateImageBuffer`                           |
+| `@use-botify/plugins/panels`     | `formatUserMention`, `buildPanelGreeting`, `buildGuidePanel`, `closeMessageCallback`      |
+| `@use-botify/plugins/icon-tools` | `createIconToolsPlugin`, `extractCustomEmoji`, `normalizeIconKey`, `renderCustomEmojiTag` |
+| `@use-botify/plugins/types`      | All plugin interfaces and option types                                                    |
+
+## Images with `file_id` Caching
+
+Verifies JPEG/PNG/WebP magic bytes and Telegram's 10 MB photo cap on startup, caches returned Telegram `file_id` values per instance, and retries once with a fresh upload if a cached ID expires:
+
+```ts title="src/lib/images.ts"
+import path from "node:path";
+
+import { createImagePlugin } from "@use-botify/plugins/images";
+
+export const images = createImagePlugin({
+  assetsDir: path.resolve(import.meta.dirname, "../assets/images"),
+  manifest: {
+    welcome: "welcome.png",
+  },
+});
+
+await images.load();
+// Inside a handler:
+// await images.replyWithImage(ctx, "welcome", { caption: "Welcome!" })
+```
+
+## Custom Emoji Commands
+
+Pair `createIconToolsPlugin` with `createIconRegistryStore` from `@use-botify/tooling/codegen` to enable `/add_icon`, `/list_icons`, and `/remove_icon`:
+
+```ts title="src/lib/icons.ts"
+import { createIconToolsPlugin } from "@use-botify/plugins/icon-tools";
+import { createIconRegistryStore } from "@use-botify/tooling/codegen";
+
+const store = createIconRegistryStore({
+  jsonPath: "src/registry/icons.registry.json",
+  tsPath: "src/registry/icons.registry.ts",
+});
+await store.load();
+
+export const iconTools = createIconToolsPlugin({ store });
+```

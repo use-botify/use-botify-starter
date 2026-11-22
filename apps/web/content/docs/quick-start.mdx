@@ -1,0 +1,111 @@
+---
+title: Quick Start
+description: Scaffold and run your first Use Botify Telegram bot in under a minute.
+---
+
+## Prerequisites
+
+- **Node.js `>=24.0.0`** — Use Botify relies on native ESM and `process.loadEnvFile()` for zero-dependency `.env` loading.
+- **A Telegram Bot Token** — Create a bot via [@BotFather](https://t.me/BotFather) and copy the token.
+- **A package manager** — `pnpm` (recommended), `npm`, `bun`, or `yarn`.
+
+## 1. Scaffold Your Bot
+
+Run the interactive CLI with your preferred package manager:
+
+```bash title="Terminal"
+pnpm create use-botify
+```
+
+Or skip the interactive prompts and scaffold with defaults:
+
+```bash title="Terminal"
+pnpm create use-botify my-bot --yes
+```
+
+During interactive setup, the CLI configures:
+
+1. **Project directory** (or `.` for the current folder)
+2. **Source layout** (`src/` directory or root-level files)
+3. **Import alias** (defaults to `@/*`)
+4. **Optional modules** — Admin panel (`ADMIN_IDS`), Developer icon tools (`DEVELOPER_IDS`), and Image caching plugin
+5. **Package manager, dependency install, and git init**
+
+## 2. Configure Environment Variables
+
+Copy `.env.example` to `.env` inside your new project:
+
+```bash title="Terminal"
+cd my-bot
+cp .env.example .env
+```
+
+Fill in your token and optional user IDs:
+
+```dotenv title=".env"
+BOT_TOKEN=123456789:your-botfather-token
+NODE_ENV=development
+
+# Optional: comma-separated Telegram user IDs
+ADMIN_IDS=
+DEVELOPER_IDS=
+```
+
+> Environment variables are parsed and validated on startup via Zod in `src/env.ts`. Missing or malformed values fail fast before polling starts.
+
+## 3. Start Development Mode
+
+```bash title="Terminal"
+pnpm dev
+```
+
+In development mode (`NODE_ENV=development`), Use Botify starts:
+
+- **`@use-botify/core`** — grammY bot runtime with structured logging and graceful shutdown.
+- **`@use-botify/tooling/hmr`** — Vite SSR watcher that hot-reloads files inside `src/features/` without restarting Telegram polling.
+- **`@use-botify/tooling/codegen`** — Automatically regenerates `src/generated/routes.d.ts` whenever routes change.
+
+## Generated Project Structure
+
+With default options (`--yes`), `create-use-botify` generates:
+
+```text
+my-bot/
+├── src/
+│   ├── features/
+│   │   ├── (admin)/
+│   │   │   └── panel/
+│   │   │       ├── command.ts          # /panel
+│   │   │       └── close.callback.ts   # panel:close
+│   │   ├── (developer)/
+│   │   │   ├── add_icon/command.ts     # /add_icon
+│   │   │   ├── list_icons/command.ts   # /list_icons
+│   │   │   └── remove_icon/command.ts  # /remove_icon
+│   │   └── start/
+│   │       ├── command.ts              # /start
+│   │       └── ping.callback.ts        # start:ping
+│   ├── generated/
+│   │   └── routes.d.ts                 # auto-generated route union types
+│   ├── lib/
+│   │   ├── access.ts                   # isAdmin() & isDeveloper() guards
+│   │   └── icons.ts                    # iconStore & iconTools plugin
+│   ├── registry/
+│   │   └── icons.registry.json         # persisted custom Telegram emojis
+│   ├── env.ts                          # Zod environment validation
+│   └── main.ts                         # bot bootstrap & HMR wiring
+├── .env.example
+├── biome.json
+├── package.json
+└── tsconfig.json
+```
+
+## Production Build
+
+Compile TypeScript to `dist/` and boot without Vite overhead:
+
+```bash title="Terminal"
+pnpm build
+pnpm start
+```
+
+When `NODE_ENV=production`, `main.ts` bypasses the Vite HMR watcher and mounts `createFsRouter` directly.

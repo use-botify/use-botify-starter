@@ -1,0 +1,41 @@
+---
+title: "@use-botify/tooling"
+description: Vite SSR feature hot-reloading, Next.js-style routes.d.ts typegen, and atomic icon registry codegen.
+---
+
+`@use-botify/tooling` powers Use Botify's development workflow: zero-restart feature HMR via Vite SSR, automatic `routes.d.ts` generation, and an atomic JSON + TypeScript icon registry store.
+
+## Installation
+
+```bash title="Terminal"
+pnpm add -D @use-botify/tooling vite
+```
+
+> If your bot runs `/add_icon` and `/remove_icon` in production using `createIconRegistryStore`, install `@use-botify/tooling` under `dependencies`.
+
+## Entrypoints
+
+| Import Path                   | Purpose                                                   |
+| :---------------------------- | :-------------------------------------------------------- |
+| `@use-botify/tooling`         | Convenience barrel exporting HMR and codegen helpers      |
+| `@use-botify/tooling/hmr`     | `startFeatureHmr` Vite SSR watcher & module invalidation  |
+| `@use-botify/tooling/codegen` | `writeRouteTypes` and `createIconRegistryStore`           |
+| `@use-botify/tooling/types`   | HMR watcher, route codegen, and icon registry store types |
+
+## Icon Registry Store
+
+```ts title="src/lib/icons.ts"
+import path from "node:path";
+import process from "node:process";
+
+import { createIconRegistryStore } from "@use-botify/tooling/codegen";
+
+export const iconStore = createIconRegistryStore({
+  jsonPath: path.resolve(process.cwd(), "src/registry/icons.registry.json"),
+  tsPath: path.resolve(process.cwd(), "src/registry/icons.registry.ts"),
+});
+
+await iconStore.load();
+```
+
+See [Vite Feature HMR](/docs/guides/vite-hmr) for the full development hot-reload setup.

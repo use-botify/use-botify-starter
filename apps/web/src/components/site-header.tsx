@@ -1,64 +1,61 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { useCallback, useRef, useSyncExternalStore } from "react";
+import Link from "next/link"
+import { useCallback, useRef, useSyncExternalStore } from "react"
 
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 function useIsStuck(ref: React.RefObject<HTMLElement | null>) {
-  const stuckRef = useRef(false);
+  const stuckRef = useRef(false)
 
   const subscribe = useCallback(
     (onChange: () => void) => {
-      const el = ref.current;
-      if (!el) return () => {};
+      const el = ref.current
+      if (!el) return () => {}
 
       const observer = new IntersectionObserver(([entry]) => {
-        const next = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+        if (!entry) return
+        const next = !entry.isIntersecting && entry.boundingClientRect.top < 0
         if (next !== stuckRef.current) {
-          stuckRef.current = next;
-          onChange();
+          stuckRef.current = next
+          onChange()
         }
-      });
-      observer.observe(el);
-      return () => observer.disconnect();
+      })
+      observer.observe(el)
+      return () => observer.disconnect()
     },
-    [ref],
-  );
+    [ref]
+  )
 
   return useSyncExternalStore(
     subscribe,
     () => stuckRef.current,
-    () => false,
-  );
+    () => false
+  )
 }
 
 export function SiteHeader() {
-  const sentinelRef = useRef<HTMLDivElement>(null);
-  const stuck = useIsStuck(sentinelRef);
+  const sentinelRef = useRef<HTMLDivElement>(null)
+  const stuck = useIsStuck(sentinelRef)
 
   return (
     <>
       <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
 
-      <div className="fixed top-0 right-0 left-0 z-50 h-14 sm:h-16 flex items-center">
+      <div className="fixed top-0 right-0 left-0 z-50 flex h-14 items-center sm:h-16">
         {stuck && (
           <div
             aria-hidden="true"
             className={cn(
               "pointer-events-none absolute -inset-x-2 top-0 -bottom-3 -z-10",
-              "bg-canvas/85 backdrop-blur-md supports-backdrop-filter:bg-canvas/65",
+              "bg-background/85 backdrop-blur-md supports-backdrop-filter:bg-background/65",
               "mask-[linear-gradient(to_bottom,black_70%,transparent)]",
-              "transition-opacity duration-300 motion-reduce:transition-none",
+              "transition-opacity duration-300 motion-reduce:transition-none"
             )}
           />
         )}
-        <header
-          className={cn(
-            "flex w-full max-w-6xl items-center justify-between px-6 mx-auto",
-          )}
-        >
+        <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-6">
           <Link
             href="/"
             className="flex items-center justify-center gap-x-2.5 font-mono [&_svg]:size-6 [&_svg]:shrink-0 sm:[&_svg]:size-7.5"
@@ -86,7 +83,7 @@ export function SiteHeader() {
             </p>
           </Link>
 
-          <nav className="flex items-center gap-3">
+          <nav className="flex items-center gap-4">
             <a
               href="#packages"
               className="hidden font-mono text-xs text-muted-foreground transition-colors hover:text-foreground sm:inline-block"
@@ -95,13 +92,20 @@ export function SiteHeader() {
             </a>
 
             <Link
+              href="/docs"
+              className="font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Docs
+            </Link>
+
+            <Link
               href="https://github.com/use-botify/use-botify-starter"
               target="_blank"
               rel="noreferrer"
               aria-label="Use Botify on GitHub"
               className={cn(
                 buttonVariants({ size: "icon", variant: "secondary" }),
-                "border",
+                "border"
               )}
             >
               <svg
@@ -122,5 +126,5 @@ export function SiteHeader() {
         </header>
       </div>
     </>
-  );
+  )
 }

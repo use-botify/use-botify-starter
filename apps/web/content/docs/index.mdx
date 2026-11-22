@@ -1,0 +1,28 @@
+---
+title: Introduction
+description: Modular TypeScript framework and CLI scaffolder for Next.js-style grammY Telegram bots.
+---
+
+**Use Botify** is a modular ecosystem for building production Telegram bots in TypeScript on top of [grammY](https://grammy.dev).
+
+## Quick Start
+
+Scaffold a complete bot with file-based routing, Vite feature HMR, Biome, and strict Zod environment validation:
+
+```bash
+pnpm create use-botify
+
+```
+
+## Architecture
+
+Use Botify is split into six focused npm packages so you can scaffold the full stack or adopt individual primitives in an existing grammY bot:
+
+| Package               | Role                                                                       |
+| --------------------- | -------------------------------------------------------------------------- |
+| `create-use-botify`   | Interactive CLI scaffolder (`pnpm create use-botify`)                      |
+| `@use-botify/core`    | Bot runtime, structured logger, graceful shutdown, and HMR dispatcher      |
+| `@use-botify/router`  | File-based `features/` router with `(tier)` groups and `[param]` callbacks |
+| `@use-botify/tooling` | Vite SSR feature HMR, `routes.d.ts` typegen, and icon registry codegen     |
+| `@use-botify/plugins` | Image `file_id` caching, HTML UI panels, and custom emoji commands         |
+| `@use-botify/icons`   | Typed custom Telegram emoji registry and inline keyboard builders          |

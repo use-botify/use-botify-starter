@@ -1,0 +1,19 @@
+---
+title: "@use-botify/icons"
+description: Typed Telegram custom emoji registry, smart icon objects, and inline keyboard button builders.
+---
+
+`@use-botify/icons` provides a zero-boilerplate, strongly typed layer for rendering Telegram Premium `<tg-emoji>` HTML tags and attaching custom emoji icons to inline keyboard buttons.
+
+## Installation
+
+```bash title="Terminal"
+pnpm add @use-botify/icons
+```
+
+## Highlights
+
+- **Validated built-in registry (`DEFAULT_ICONS`)** — Pre-verified icon keys and unique `customEmojiId` values with matching `<name>Icon` smart objects.
+- **Safe HTML rendering** — Escapes fallback glyphs cleanly inside `<tg-emoji emoji-id="...">` tags via `renderIconTag`.
+- **Inline button builders** — Construct grammY callback and URL buttons with custom emoji icons from registry keys or smart icon objects.
+- **Extensible registries** — Combine built-in defaults with your project's own icons captured via `@use-botify/plugins/icon-tools`.

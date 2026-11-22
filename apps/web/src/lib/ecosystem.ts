@@ -10,6 +10,7 @@ export interface BotifyPackageMeta {
   readonly summary: string
   readonly installCommand: string
   readonly entrypoints: readonly string[]
+  readonly docsUrl: string
   readonly npmUrl: string
   readonly githubUrl: string
 }
@@ -24,6 +25,7 @@ export const BOTIFY_PACKAGES = [
       "Interactive scaffolder for modular, Next.js-style grammY Telegram bots with Vite HMR.",
     installCommand: "pnpm create use-botify",
     entrypoints: ["create-use-botify", "create-use-botify/types"],
+    docsUrl: "/docs/packages/cli",
     npmUrl: "https://www.npmjs.com/package/create-use-botify",
     githubUrl:
       "https://github.com/use-botify/use-botify-starter/tree/main/apps/create-use-botify",
@@ -41,6 +43,7 @@ export const BOTIFY_PACKAGES = [
       "@use-botify/core/middleware",
       "@use-botify/core/types",
     ],
+    docsUrl: "/docs/packages/core",
     npmUrl: "https://www.npmjs.com/package/@use-botify/core",
     githubUrl:
       "https://github.com/use-botify/use-botify-starter/tree/main/packages/core",
@@ -58,6 +61,7 @@ export const BOTIFY_PACKAGES = [
       "@use-botify/router/fs",
       "@use-botify/router/types",
     ],
+    docsUrl: "/docs/packages/router",
     npmUrl: "https://www.npmjs.com/package/@use-botify/router",
     githubUrl:
       "https://github.com/use-botify/use-botify-starter/tree/main/packages/router",
@@ -76,6 +80,7 @@ export const BOTIFY_PACKAGES = [
       "@use-botify/tooling/codegen",
       "@use-botify/tooling/types",
     ],
+    docsUrl: "/docs/packages/tooling",
     npmUrl: "https://www.npmjs.com/package/@use-botify/tooling",
     githubUrl:
       "https://github.com/use-botify/use-botify-starter/tree/main/packages/tooling",
@@ -95,6 +100,7 @@ export const BOTIFY_PACKAGES = [
       "@use-botify/plugins/icon-tools",
       "@use-botify/plugins/types",
     ],
+    docsUrl: "/docs/packages/plugins",
     npmUrl: "https://www.npmjs.com/package/@use-botify/plugins",
     githubUrl:
       "https://github.com/use-botify/use-botify-starter/tree/main/packages/plugins",
@@ -108,6 +114,7 @@ export const BOTIFY_PACKAGES = [
       "Typed Telegram custom emoji registry, smart icon objects, and inline keyboard button builders.",
     installCommand: "pnpm add @use-botify/icons",
     entrypoints: ["@use-botify/icons"],
+    docsUrl: "/docs/packages/icons",
     npmUrl: "https://www.npmjs.com/package/@use-botify/icons",
     githubUrl:
       "https://github.com/use-botify/use-botify-starter/tree/main/packages/icons",

@@ -1,0 +1,86 @@
+---
+title: CLI Flags & Options
+description: Complete reference for create-use-botify interactive prompts, CLI flags, and programmatic scaffolding API.
+---
+
+`create-use-botify` works both as an interactive wizard and as a fully scriptable CLI for CI pipelines or repeat setups.
+
+## Usage
+
+```bash title="Terminal"
+pnpm create use-botify [project-name] [options]
+```
+
+You can also invoke it with `npx create-use-botify@latest`, `bun create use-botify`, or `yarn create use-botify`.
+
+## Options Reference
+
+| Flag                                                 | Description                                                                           | Default  |
+| :--------------------------------------------------- | :------------------------------------------------------------------------------------ | :------- |
+| `-y, --yes`                                          | Skip all prompts and scaffold with defaults                                           | `false`  |
+| `--src` / `--no-src`                                 | Place application files inside `src/`                                                 | `true`   |
+| `--alias <pattern>`                                  | TypeScript & Vite import alias (e.g. `@/*`, `~/*`)                                    | `@/*`    |
+| `--admin` / `--no-admin`                             | Include `(admin)/panel` feature & `ADMIN_IDS` guard                                   | `true`   |
+| `--developer` / `--no-developer`                     | Include `(developer)` custom emoji tools (`/add_icon`, `/list_icons`, `/remove_icon`) | `true`   |
+| `--images` / `--no-images`                           | Include `@use-botify/plugins/images` manifest & `file_id` caching                     | `false`  |
+| `--pm <pm>`                                          | Package manager: `pnpm`, `npm`, `yarn`, or `bun`                                      | Detected |
+| `--use-pnpm`, `--use-npm`, `--use-yarn`, `--use-bun` | Shorthand package manager selectors                                                   | —        |
+| `--skip-install` / `--no-install`                    | Write files without running dependency installation                                   | `false`  |
+| `--no-git`                                           | Skip `git init` after scaffolding                                                     | `false`  |
+| `--overwrite` / `--force`                            | Allow scaffolding into a non-empty target directory                                   | `false`  |
+| `-v, --version`                                      | Print installed CLI version                                                           | —        |
+| `-h, --help`                                         | Print CLI help message                                                                | —        |
+
+## Common Recipes
+
+### Minimal bot without optional plugins
+
+```bash title="Terminal"
+pnpm create use-botify lean-bot --yes --no-admin --no-developer --no-images
+```
+
+Only installs `@use-botify/core`, `@use-botify/router`, `grammy`, and `zod` as runtime dependencies, keeping `@use-botify/tooling` in `devDependencies`.
+
+### Root-level layout with custom alias and image caching
+
+```bash title="Terminal"
+pnpm create use-botify media-bot --yes --no-src --alias "~/*" --images
+```
+
+### Scaffold into the current directory
+
+```bash title="Terminal"
+pnpm create use-botify . --yes --overwrite
+```
+
+## Programmatic API
+
+`create-use-botify` also exports its template engine and disk writer for custom tooling or monorepo generators:
+
+```ts title="scaffold-example.ts"
+import {
+  renderProjectFiles,
+  resolveScaffoldOptions,
+  scaffoldProject,
+} from "create-use-botify";
+
+const options = resolveScaffoldOptions({
+  projectName: "support-bot",
+  useSrcDir: true,
+  importAlias: "@/*",
+  admin: true,
+  developer: false,
+  images: true,
+  install: false,
+  git: false,
+});
+
+// Preview generated files in memory without touching disk
+const files = renderProjectFiles(options);
+
+// Or write the project directly to options.targetDir
+const result = await scaffoldProject(options);
+console.log(
+  `Created ${result.files.length} files at ${result.options.targetDir}`,
+);
+```

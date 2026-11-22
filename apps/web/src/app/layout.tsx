@@ -1,3 +1,4 @@
+import { RootProvider } from "fumadocs-ui/provider/next"
 import type { Metadata } from "next"
 import "@/styles/globals.css"
 
@@ -26,13 +27,23 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={cn(
-        "font-inter antialiased tracking-wide font-normal leading-normal dark",
+        "dark font-inter leading-normal font-normal tracking-wide antialiased",
         mono.variable,
         inter.variable
       )}
     >
-      <body>{children}</body>
+      <body className="flex min-h-screen flex-col">
+        <RootProvider
+          theme={{
+            defaultTheme: "dark",
+            enableSystem: false,
+          }}
+        >
+          {children}
+        </RootProvider>
+      </body>
     </html>
   )
 }
