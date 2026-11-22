@@ -69,3 +69,13 @@ export interface ScaffoldResult {
   readonly installed: boolean
   readonly gitInitialized: boolean
 }
+
+export interface ScaffoldCallbacks {
+  readonly onFilesStart?: (fileCount: number) => void
+  readonly onFilesComplete?: (fileCount: number) => void
+  readonly onGitStart?: () => void
+  readonly onGitComplete?: (initialized: boolean) => void
+  readonly onInstallStart?: (packageManager: PackageManager) => void
+  readonly onInstallComplete?: (installed: boolean) => void
+  readonly onWarning?: (message: string) => void
+}

@@ -8,6 +8,7 @@ export {
   PACKAGE_MANAGERS,
 } from "./lib/package-manager"
 export { promptScaffoldOptions } from "./lib/prompts"
+export { scaffoldProject } from "./lib/scaffold"
 export {
   DEFAULT_IMPORT_ALIAS,
   DEFAULT_PROJECT_NAME,
@@ -22,3 +23,5 @@ export {
   validateImportAlias,
   validateProjectName,
 } from "./lib/schema"
+export { BOTIFY_VERSIONS } from "./templates/config-files"
+export { renderProjectFiles } from "./templates/render-project"
