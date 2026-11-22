@@ -1,0 +1,36 @@
+name: Feature Request
+description: Suggest a new capability, plugin, or CLI option for Use Botify.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: dropdown
+    id: package
+    attributes:
+      label: Target Area
+      options:
+        - create-use-botify
+        - "@use-botify/core"
+        - "@use-botify/router"
+        - "@use-botify/tooling"
+        - "@use-botify/plugins"
+        - "@use-botify/icons"
+        - apps/web (Docs & Website)
+        - New package / Ecosystem
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or Motivation
+      description: What workflow or problem does this solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Solution
+      description: Describe the API, CLI flag, or behavior you'd like to see.
+    validations:
+      required: true
