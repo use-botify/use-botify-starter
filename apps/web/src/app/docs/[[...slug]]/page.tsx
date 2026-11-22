@@ -44,8 +44,25 @@ export async function generateMetadata(
   const page = source.getPage(params.slug)
   if (!page) notFound()
 
+  const title = page.data.title
+  const description = page.data.description
+
   return {
-    title: page.data.title,
-    description: page.data.description,
+    title,
+    description,
+    alternates: {
+      canonical: page.url,
+    },
+    openGraph: {
+      type: "article",
+      url: page.url,
+      title,
+      description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
   }
 }

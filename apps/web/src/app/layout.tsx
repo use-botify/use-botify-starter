@@ -3,15 +3,16 @@ import type { Metadata } from "next"
 import "@/styles/globals.css"
 
 import { inter, mono } from "@/lib/font"
+import { SITE_CONFIG, SITE_URL } from "@/lib/site"
 import { cn } from "@/lib/utils"
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Use Botify — Modular TypeScript Framework for Telegram Bots",
-    template: "%s · Use Botify",
+    default: SITE_CONFIG.title,
+    template: `%s · ${SITE_CONFIG.name}`,
   },
-  description:
-    "Scaffold production-ready, Next.js-style grammY Telegram bots with Vite feature HMR, file-based routing, typed custom emoji icons, and zero boilerplate.",
+  description: SITE_CONFIG.description,
   keywords: [
     "use-botify",
     "create-use-botify",
@@ -21,6 +22,23 @@ export const metadata: Metadata = {
     "vite hmr",
     "telegram custom emoji",
   ],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: SITE_URL,
+    siteName: SITE_CONFIG.name,
+    title: SITE_CONFIG.title,
+    description: SITE_CONFIG.description,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_CONFIG.title,
+    description: SITE_CONFIG.description,
+    creator: SITE_CONFIG.creator,
+  },
+  alternates: {
+    canonical: "/",
+  },
 }
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

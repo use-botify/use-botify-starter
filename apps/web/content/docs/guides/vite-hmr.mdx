@@ -1,0 +1,83 @@
+---
+title: Vite Feature HMR
+description: Reload Telegram commands and callbacks live without disconnecting long polling or database pools.
+---
+
+Restarting a Telegram bot process on every edit drops active long-polling connections, tears down database clients, and slows down iteration. Use Botify separates the **long-lived bot runtime** from **hot-swappable feature middleware**.
+
+## How It Works
+
+1. **`createBot` (`@use-botify/core`)** boots the grammY instance, structured logger, and graceful shutdown hooks once.
+2. **`createHmrDispatcher` (`@use-botify/core/middleware`)** mounts a thin, mutable middleware proxy on the bot.
+3. **`startFeatureHmr` (`@use-botify/tooling/hmr`)** runs a Vite SSR module loader watching `features/` with your configured TypeScript path alias (`@/`).
+4. Whenever you save a feature file, Vite invalidates only the changed module graph, `createFsRouter` builds a fresh `Composer`, and `hmr.replace(router.composer)` swaps it atomically in memory.
+
+## Bootstrap Pattern (`src/main.ts`)
+
+```ts title="src/main.ts"
+import path from "node:path";
+import process from "node:process";
+
+import { createBot } from "@use-botify/core";
+import { createHmrDispatcher } from "@use-botify/core/middleware";
+import { createFsRouter } from "@use-botify/router/fs";
+
+import { env } from "@/env";
+
+async function bootstrap(): Promise<void> {
+  const app = createBot({ token: env.BOT_TOKEN });
+  const sourceDir = import.meta.dirname;
+  const featuresDir = path.resolve(sourceDir, "features");
+
+  if (env.NODE_ENV === "development") {
+    const hmr = createHmrDispatcher({ logger: app.logger });
+    app.use(hmr.middleware);
+
+    const [{ startFeatureHmr }, { writeRouteTypes }] = await Promise.all([
+      import("@use-botify/tooling/hmr"),
+      import("@use-botify/tooling/codegen"),
+    ]);
+
+    const watcher = await startFeatureHmr({
+      projectRoot: process.cwd(),
+      sourceDir,
+      featuresDir,
+      aliasPrefix: "@/",
+      logger: app.logger,
+      onReload: async ({ loadModule }) => {
+        const router = await createFsRouter({
+          featuresDir,
+          loadModule,
+          logger: app.logger,
+        });
+
+        hmr.replace(router.composer);
+
+        await writeRouteTypes({
+          featuresDir,
+          outputPath: path.resolve(process.cwd(), "src/generated/routes.d.ts"),
+          logger: app.logger,
+        });
+      },
+    });
+
+    app.onShutdown(() => watcher.close());
+  } else {
+    const router = await createFsRouter({
+      featuresDir,
+      logger: app.logger,
+    });
+    app.use(router.composer);
+  }
+
+  await app.start();
+}
+
+await bootstrap();
+```
+
+## Fault Tolerance & Production Isolation
+
+- **Reload error survival** — If a file edit introduces a syntax or runtime import error during reload, `startFeatureHmr` logs the failure and keeps the previous working `Composer` active until your next save.
+- **Zero Vite in production** — Because `@use-botify/tooling/hmr` is imported dynamically inside `if (env.NODE_ENV === "development")`, production deployments never load Vite or file watchers.
+- **Clean shutdown** — `app.onShutdown(() => watcher.close())` ensures `SIGINT` / `SIGTERM` closes both Telegram polling and the Vite server cleanly.
