@@ -2,6 +2,32 @@
   "name": "use-botify",
   "version": "1.0.0",
   "private": true,
+  "description": "Modular TypeScript framework and CLI scaffolder for grammY Telegram bots with Vite HMR.",
+  "license": "MIT",
+  "author": {
+    "name": "Sahil Kumar",
+    "url": "https://sahilkumar.axisbuddy.com"
+  },
+  "homepage": "https://github.com/use-botify/use-botify-starter#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/use-botify/use-botify-starter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/use-botify/use-botify-starter/issues"
+  },
+  "keywords": [
+    "use-botify",
+    "create-use-botify",
+    "telegram-bot",
+    "grammy",
+    "typescript",
+    "vite",
+    "hmr",
+    "cli",
+    "file-based-routing",
+    "telegram-custom-emoji"
+  ],
   "type": "module",
   "packageManager": "pnpm@12.21.0",
   "engines": {
